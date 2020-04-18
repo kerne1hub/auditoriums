@@ -18,9 +18,12 @@ public class Lecture {
     private Date date;
     @Transient
     private final int duration = 90;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Lecturer lecturer;
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    private Subject subject;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
 }

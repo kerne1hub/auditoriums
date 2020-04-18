@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue("lecturer")
+@DiscriminatorValue("LECTURER")
 @Getter
 @Setter
 @ToString
