@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,4 +18,11 @@ public class Auditorium {
     private String name;
     private int capacity;
     private boolean active;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "auditorium_lecture",
+            joinColumns = @JoinColumn(name = "lecture_id", columnDefinition = "bigint"),
+            inverseJoinColumns = @JoinColumn(name = "auditorium_id", columnDefinition = "int")
+    )
+    private Set<Lecture> lectures;
 }
