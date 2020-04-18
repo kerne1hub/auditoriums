@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS `auditorium` (
     `name` VARCHAR(5) NOT NULL,
     `capacity` INT NOT NULL,
     `active` BOOLEAN NOT NULL,
-    `user_type` VARCHAR(10) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`))
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
