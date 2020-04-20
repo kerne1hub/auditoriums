@@ -1,10 +1,3 @@
-CREATE TABLE IF NOT EXISTS `auditorium_lecture` (
-    `auditorium_id` INT(11),
-    `lecture_id` BIGINT(20) NOT NULL,
-    FOREIGN KEY (`auditorium_id`) REFERENCES `auditorium`(id) ON DELETE SET NULL,
-    FOREIGN KEY (`lecture_id`) REFERENCES `lecture`(id) ON DELETE CASCADE)
-ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `group_subject` (
     `group_id` BIGINT(20) NOT NULL,
     `subject_id` INT NOT NULL,

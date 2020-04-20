@@ -1,5 +1,6 @@
 package com.kernel.auditoriums.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,5 +25,6 @@ public class Lecturer extends User {
     @ManyToMany(mappedBy = "lecturers", fetch = FetchType.LAZY)
     private Set<Group> groups;
     @OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Lecture> lectures;
 }
