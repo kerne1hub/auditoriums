@@ -1,4 +1,23 @@
 dist: trusty
+addons:
+  apt:
+    sources:
+      - sourceline: "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-8.0"
+        key_url: https://raw.githubusercontent.com/travis-ci/apt-source-safelist/master/keys/mysql-5.7-trusty.asc
+    packages:
+      - mysql-community-client
+      - mysql-community-server
+      - mysql-community-client-core
+      - mysql-community-server-core
+      - mysql-client
+      - mysql-server
+      - mysql-common
+      - libmysqlclient-dev
+      - libmysqlclient21
+      - libstdc++6
+      - libssl1.0.0
+      - libmecab2
+      - init-system-helpers
 services:
   - mysql
 sudo: true
@@ -6,14 +25,6 @@ before_install:
   - mysql -e 'CREATE DATABASE auditoriums_test;'
   - mysql -u root -e "CREATE USER 'kernel'@'localhost' IDENTIFIED BY '${dbPass}';"
   - mysql -u root -e "GRANT ALL ON auditoriums_test.* TO 'kernel'@'localhost';"
-before_script:
-  - wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb
-  - sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
-  - sudo apt-get update -q
-  - sudo apt-get install -q -y --allow-unauthenticated -o Dpkg::Options::=--force-confnew mysql-server
-  - sudo systemctl restart mysql
-  - sudo mysql_upgrade
-  - mysql --version
 language: java
 jdk:
   - oraclejdk8
