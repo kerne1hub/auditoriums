@@ -17,7 +17,8 @@ public class AuditoriumService {
     }
 
     public ResponseEntity<List<Auditorium>> getAuditoriums() {
-        return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+        List<Auditorium> auditoriums = repository.findAll();
+        return ResponseEntity.ok(auditoriums);
     }
 
     public ResponseEntity<Auditorium> createAuditorium(Auditorium auditorium) {
@@ -34,6 +35,13 @@ public class AuditoriumService {
         auditoriumFromDb.setCapacity(auditorium.getCapacity());
         auditoriumFromDb.setActive(auditorium.isActive());
 
-        return new ResponseEntity<>(repository.save(auditoriumFromDb), HttpStatus.OK);
+        return ResponseEntity.ok(repository.save(auditoriumFromDb));
+    }
+
+    public ResponseEntity<Auditorium> getAuditorium(Auditorium auditorium) {
+        if (auditorium != null) {
+            return ResponseEntity.ok(auditorium);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

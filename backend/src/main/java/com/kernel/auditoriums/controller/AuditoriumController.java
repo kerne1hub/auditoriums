@@ -5,7 +5,6 @@ import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +30,12 @@ public class AuditoriumController {
 
     @GetMapping("{id}")
     @JsonView({Views.Extended.class})
-    public ResponseEntity<Auditorium> getAuditoriumDescription(@PathVariable("id") Auditorium auditorium) {
-        return new ResponseEntity<>(auditorium, HttpStatus.OK);
+    public ResponseEntity<Auditorium> getAuditoriumDetails(@PathVariable("id") Auditorium auditorium) {
+        return auditoriumService.getAuditorium(auditorium);
     }
 
     @PostMapping
+    @JsonView({Views.Default.class})
     public ResponseEntity<Auditorium> createAuditorium(@RequestBody Auditorium auditorium) {
         return auditoriumService.createAuditorium(auditorium);
     }
