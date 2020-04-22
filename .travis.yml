@@ -1,14 +1,22 @@
 dist: trusty
 services:
   - mysql
+sudo: true
 before_install:
   - mysql -e 'CREATE DATABASE auditoriums_test;'
   - mysql -u root -e "CREATE USER 'kernel'@'localhost' IDENTIFIED BY '${dbPass}';"
   - mysql -u root -e "GRANT ALL ON auditoriums_test.* TO 'kernel'@'localhost';"
+before_script:
+  - wget https://repo.mysql.com//mysql-apt-config_0.8.10-1_all.deb
+  - sudo dpkg -i mysql-apt-config_0.8.10-1_all.deb
+  - sudo apt-get update -q
+  - sudo apt-get install -q -y --allow-unauthenticated -o Dpkg::Options::=--force-confnew mysql-server
+  - sudo systemctl restart mysql
+  - sudo mysql_upgrade
+  - mysql --version
 language: java
 jdk:
   - oraclejdk8
-sudo: false
 script:
   - cd backend
   - ./mvnw clean compile test
