@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `subject` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`name`))
+ENGINE=InnoDB DEFAULT CHARSET=utf8;

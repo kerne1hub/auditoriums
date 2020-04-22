@@ -1,5 +1,6 @@
 package com.kernel.auditoriums.api;
 
+import com.kernel.auditoriums.AuditoriumsApplication;
 import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
 import org.junit.Before;
@@ -25,7 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = AuditoriumsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuditoriumTests {
     @Autowired
     private TestRestTemplate restTemplate;
