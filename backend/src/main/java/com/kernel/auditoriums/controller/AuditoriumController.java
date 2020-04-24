@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("auditoriums")
+@RequestMapping("/auditoriums")
 public class AuditoriumController {
 
     private final AuditoriumService auditoriumService;
@@ -28,8 +28,8 @@ public class AuditoriumController {
         return auditoriumService.getAuditoriums();
     }
 
-    @GetMapping("{id}")
-    @JsonView({Views.Extended.class})
+    @GetMapping("/{id}")
+    @JsonView({Views.Auditorium.class})
     public ResponseEntity<Auditorium> getAuditoriumDetails(@PathVariable("id") Auditorium auditorium) {
         return auditoriumService.getAuditorium(auditorium);
     }
@@ -40,12 +40,12 @@ public class AuditoriumController {
         return auditoriumService.createAuditorium(auditorium);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteAuditorium(@PathVariable("id") int id) {
         auditoriumService.deleteAuditorium(id);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @JsonView(Views.Default.class)
     public ResponseEntity<Auditorium> updateAuditorium(@PathVariable("id") Auditorium auditoriumFromDb,
                                                        @RequestBody Auditorium auditorium) {

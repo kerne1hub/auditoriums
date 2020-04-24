@@ -1,8 +1,9 @@
 package com.kernel.auditoriums.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.kernel.auditoriums.entity.utils.Views;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +19,10 @@ import java.util.Set;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Group {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
     private Long id;
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
     private String name;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(

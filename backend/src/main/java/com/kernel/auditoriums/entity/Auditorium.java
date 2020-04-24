@@ -1,6 +1,5 @@
 package com.kernel.auditoriums.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -18,16 +17,15 @@ import java.util.Set;
 public class Auditorium {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.Default.class)
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
     private Integer id;
-    @JsonView(Views.Default.class)
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
     private String name;
-    @JsonView(Views.Default.class)
+    @JsonView({Views.Default.class, Views.Auditorium.class})
     private int capacity;
-    @JsonView(Views.Default.class)
+    @JsonView({Views.Default.class, Views.Auditorium.class})
     private boolean active;
-    @JsonView(value = Views.Extended.class)
-    @JsonBackReference
+    @JsonView(Views.Auditorium.class)
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
     private Set<Lecture> lectures;
 
