@@ -21,19 +21,19 @@ import java.util.Date;
 public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private Long id;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private Date date;
     @Transient
     private final int duration = 90;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id")
-    @JsonView({Views.Default.class, Views.Auditorium.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Group.class})
     private Lecturer lecturer;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private Subject subject;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
@@ -41,6 +41,6 @@ public class Lecture {
     private Group group;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "auditorium_id", referencedColumnName = "id")
-    @JsonView({Views.Default.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Lecturer.class, Views.Group.class})
     private Auditorium auditorium;
 }

@@ -16,9 +16,9 @@ import java.util.Set;
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private Integer id;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private String name;
     @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
     private Set<Group> groups;

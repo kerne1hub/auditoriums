@@ -19,15 +19,15 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private Long id;
     @Column(name = "firstname")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private String firstName;
     @Column(name = "lastname")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private String lastName;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
     private String patronymic;
     @JsonView(Views.Extended.class)
     private String email;
