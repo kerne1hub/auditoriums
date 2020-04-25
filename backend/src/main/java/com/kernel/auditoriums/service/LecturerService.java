@@ -34,4 +34,18 @@ public class LecturerService {
         Lecturer savedLecturer = repository.save(lecturer);
         return new ResponseEntity<>(savedLecturer, HttpStatus.CREATED);
     }
+
+    public ResponseEntity<Lecturer> editLecturer(Lecturer lecturerFromDb, Lecturer lecturer) {
+        if (lecturer.getPassword() == null || !lecturer.getPassword().equals(lecturerFromDb.getPassword()))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        lecturerFromDb.setFirstName(lecturer.getFirstName());
+        lecturerFromDb.setLastName(lecturer.getLastName());
+        lecturerFromDb.setPosition(lecturer.getPosition());
+        return ResponseEntity.ok(repository.save(lecturerFromDb));
+    }
+
+    public void deleteLecturer(Lecturer lecturerFromDb) {
+        repository.delete(lecturerFromDb);
+    }
 }

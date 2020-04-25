@@ -34,8 +34,20 @@ public class LecturerController {
     }
 
     @PostMapping
-    @JsonView({Views.Default.class})
+    @JsonView(Views.Default.class)
     public ResponseEntity<Lecturer> registerLecturer(@RequestBody Lecturer lecturer) {
         return lecturerService.createLecturer(lecturer);
+    }
+
+    @PutMapping("/{id}")
+    @JsonView(Views.Default.class)
+    public ResponseEntity<Lecturer> editLecturerDetails(@PathVariable("id") Lecturer lecturerFromDb,
+                                                        @RequestBody Lecturer lecturer) {
+        return lecturerService.editLecturer(lecturerFromDb, lecturer);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteLecturer(@PathVariable("id") Lecturer lecturerFromDb) {
+        lecturerService.deleteLecturer(lecturerFromDb);
     }
 }
