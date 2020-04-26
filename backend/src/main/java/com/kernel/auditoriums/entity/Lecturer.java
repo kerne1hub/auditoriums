@@ -20,7 +20,7 @@ import java.util.Set;
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Lecturer extends User {
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class})
     private String position;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

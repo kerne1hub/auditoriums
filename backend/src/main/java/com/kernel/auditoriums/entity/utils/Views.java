@@ -7,4 +7,5 @@ public final class Views {
     public interface Auditorium {}
     public interface Lecturer {}
     public interface Group {}
+    public interface Subject {}
 }

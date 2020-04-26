@@ -11,4 +11,4 @@ jdk:
   - oraclejdk8
 script:
   - cd backend
-  - ./mvnw clean compile test
+  - mvn clean compile test

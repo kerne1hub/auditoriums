@@ -23,19 +23,19 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    @JsonView({Views.Default.class})
+    @JsonView(Views.Default.class)
     public ResponseEntity<List<Auditorium>> getAuditoriums() {
         return auditoriumService.getAuditoriums();
     }
 
     @GetMapping("/{id}")
-    @JsonView({Views.Auditorium.class})
+    @JsonView(Views.Auditorium.class)
     public ResponseEntity<Auditorium> getAuditoriumDetails(@PathVariable("id") Auditorium auditorium) {
         return auditoriumService.getAuditorium(auditorium);
     }
 
     @PostMapping
-    @JsonView({Views.Default.class})
+    @JsonView(Views.Default.class)
     public ResponseEntity<Auditorium> createAuditorium(@RequestBody Auditorium auditorium) {
         return auditoriumService.createAuditorium(auditorium);
     }
