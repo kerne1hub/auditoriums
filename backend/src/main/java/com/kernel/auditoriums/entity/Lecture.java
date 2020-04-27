@@ -32,29 +32,21 @@ public class Lecture {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Group.class, Views.Lecture.class})
     private Lecturer lecturer;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Subject subject;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Lecture.class})
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auditorium_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference
     @JsonView({Views.Default.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Auditorium auditorium;
 
