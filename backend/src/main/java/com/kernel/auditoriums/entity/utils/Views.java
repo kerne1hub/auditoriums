@@ -8,4 +8,5 @@ public final class Views {
     public interface Lecturer {}
     public interface Group {}
     public interface Subject {}
+    public interface Lecture {}
 }

@@ -27,7 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = AuditoriumsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuditoriumTests {
+public class AuditoriumTests extends TestBase{
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -35,106 +35,89 @@ public class AuditoriumTests {
     private AuditoriumRepository repository;
 
     @LocalServerPort
-    private int port;
+    protected int port;
 
     private String url;
 
     @Before
-    public void resetDb() {
+    public void setUp() {
         repository.deleteAll();
         repository.flush();
-        url = "http://localhost:" + port + "/api/auditoriums";
+        url = "http://localhost:" + port + "/api/";
     }
 
     @Test
     public void testCreateAuditorium() {
-        Auditorium auditorium = new Auditorium("1-303", 25, true);
-        ResponseEntity<Auditorium> response = restTemplate.postForEntity(url, auditorium, Auditorium.class);
-
+        String auditoriumName = "1-303";
+        ResponseEntity<Auditorium> response = createAuditorium(restTemplate, url, auditoriumName, 25, true);
         assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
         assertThat(response.getBody().getId(), notNullValue());
-        assertThat(response.getBody().getName(), is(auditorium.getName()));
+        assertThat(response.getBody().getName(), is(auditoriumName));
     }
 
     @Test
     public void testGetAuditoriums() {
-        Auditorium auditorium1 = new Auditorium("1-303", 25, true);
-        ResponseEntity<Auditorium> response1 = restTemplate.postForEntity(url, auditorium1, Auditorium.class);
-
+        String auditorium1Name = "1-301";
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
-        Auditorium auditorium2 = new Auditorium("6-407", 26, true);
-        ResponseEntity<Auditorium> response2 = restTemplate.postForEntity(url, auditorium2, Auditorium.class);
-
+        String auditorium2Name = "6-407";
+        ResponseEntity<Auditorium> response2 = createAuditorium(restTemplate, url, auditorium2Name, 26, true);
         assertThat(response2.getStatusCode(), is(HttpStatus.CREATED));
 
-        ResponseEntity<List<Auditorium>> response3 = restTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Auditorium>>() {
-        });
-
+        ResponseEntity<List<Auditorium>> response3 = getAuditoriumList(restTemplate, url);
         List<Auditorium> auditoriums = response3.getBody();
-
         assertThat(auditoriums, notNullValue());
         assertThat(auditoriums.size(), is(2));
-        assertThat(auditoriums.get(0).getName(), is(auditorium1.getName()));
-        assertThat(auditoriums.get(1).getName(), is(auditorium2.getName()));
+        assertThat(auditoriums.get(0).getName(), is(auditorium1Name));
+        assertThat(auditoriums.get(1).getName(), is(auditorium2Name));
     }
 
     @Test
     public void testGetAuditoriumDetails() {
-        Auditorium auditorium1 = new Auditorium("1-303", 25, true);
-        ResponseEntity<Auditorium> response1 = restTemplate.postForEntity(url, auditorium1, Auditorium.class);
-
+        String auditorium1Name = "1-301";
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
         int id = response1.getBody().getId();
-        ResponseEntity<Auditorium> response2 = restTemplate.getForEntity(url + "/" + id, Auditorium.class);
-
+        ResponseEntity<Auditorium> response2 = restTemplate.getForEntity(url + "auditoriums" + "/" + id, Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
-        assertThat(response2.getBody().getName(), is(auditorium1.getName()));
+        assertThat(response2.getBody().getName(), is(auditorium1Name));
     }
 
     @Test
     public void testUpdateAuditoriumDetailsOk() {
-        Auditorium auditorium1 = new Auditorium("1-303", 25, true);
-        ResponseEntity<Auditorium> response1 = restTemplate.postForEntity(url, auditorium1, Auditorium.class);
-
+        String auditorium1Name = "1-301";
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
-        int id = response1.getBody().getId();
-        auditorium1.setName("1-303А");
-        auditorium1.setCapacity(24);
-        auditorium1.setActive(false);
-        ResponseEntity<Auditorium> response2 = restTemplate.exchange(url + "/" + id, HttpMethod.PUT,
-                new HttpEntity<>(auditorium1), Auditorium.class);
-
+        Auditorium auditorium = response1.getBody();
+        int id = auditorium.getId();
+        auditorium.setName("1-303А");
+        auditorium.setCapacity(24);
+        auditorium.setActive(false);
+        ResponseEntity<Auditorium> response2 = restTemplate.exchange(url + "auditoriums" + "/" + id, HttpMethod.PUT,
+                new HttpEntity<>(auditorium), Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
 
-        auditorium1.setId(id);
-        assertThat(response2.getBody(), is(auditorium1));
-    }
-
-    @Test
-    @Ignore
-    public void testUpdateAuditoriumDetailsFail() {
-
+        auditorium.setId(id);
+        assertThat(response2.getBody(), is(auditorium));
     }
 
     @Test
     public void testDeleteAuditorium() {
-        Auditorium auditorium1 = new Auditorium("1-303", 25, true);
-        ResponseEntity<Auditorium> response1 = restTemplate.postForEntity(url, auditorium1, Auditorium.class);
-
+        String auditorium1Name = "1-301";
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
         int id = response1.getBody().getId();
-        ResponseEntity<Void> response2 = restTemplate.exchange(url + "/" + id, HttpMethod.DELETE, null, Void.class);
+        ResponseEntity<Void> response2 = restTemplate.exchange(url + "auditoriums" + "/" + id, HttpMethod.DELETE, null, Void.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), nullValue());
 
-        ResponseEntity<Auditorium> response3 = restTemplate.getForEntity(url + "/" + id, Auditorium.class);
+        ResponseEntity<Auditorium> response3 = restTemplate.getForEntity(url + "auditoriums" +"/" + id, Auditorium.class);
         assertThat(response3.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 }

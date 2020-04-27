@@ -1,8 +1,6 @@
 package com.kernel.auditoriums.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.kernel.auditoriums.entity.utils.Views;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,28 +17,64 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Lecture {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Long id;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
+
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Date date;
+
     @Transient
     private final int duration = 90;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Group.class})
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Group.class, Views.Lecture.class})
     private Lecturer lecturer;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class})
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Subject subject;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class})
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Lecture.class})
     private Group group;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "auditorium_id", referencedColumnName = "id")
-    @JsonView({Views.Default.class, Views.Lecturer.class, Views.Group.class})
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auditorium_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference
+    @JsonView({Views.Default.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
     private Auditorium auditorium;
+
+    @Column(name = "lecturer_id", insertable = false, updatable = false)
+    private Long lecturerId;
+
+    @Column(name = "subject_id", insertable = false, updatable = false)
+    private Integer subjectId;
+
+    @Column(name = "group_id", insertable = false, updatable = false)
+    private Long groupId;
+
+    @Column(name = "auditorium_id", insertable = false, updatable = false)
+    private Integer auditoriumId;
+
+    public Lecture(Date date, Long lecturerId, int subjectId, long groupId, int auditoriumId) {
+        this.date = date;
+        this.lecturerId = lecturerId;
+        this.subjectId = subjectId;
+        this.groupId = groupId;
+        this.auditoriumId = auditoriumId;
+    }
 }
