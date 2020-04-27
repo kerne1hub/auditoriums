@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @ToString
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecturer.class)
 public class Lecturer extends User {
 
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})

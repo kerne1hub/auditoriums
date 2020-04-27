@@ -15,7 +15,7 @@ import java.util.Date;
 @EqualsAndHashCode(exclude = {"lecturer", "subject", "group", "auditorium"})
 @ToString
 @NoArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecture.class)
 public class Lecture {
 
     @Id
