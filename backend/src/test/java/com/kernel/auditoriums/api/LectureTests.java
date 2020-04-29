@@ -39,6 +39,8 @@ public class LectureTests extends TestBase {
     private GroupRepository groupRepository;
     @Autowired
     private LecturerRepository lecturerRepository;
+    @Autowired
+    private BuildingRepository buildingRepository;
 
     @LocalServerPort
     private int port;
@@ -57,12 +59,16 @@ public class LectureTests extends TestBase {
         lecturerRepository.flush();
         auditoriumRepository.deleteAll();
         auditoriumRepository.flush();
+        buildingRepository.deleteAll();
+        buildingRepository.flush();
         url = "http://localhost:" + port + "/api/";
     }
 
     @Test
     public void testCreateLecture() {
-        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, "1-301", 25, true);
+        int buildingId = createBuilding(restTemplate, url, "1").getBody().getId();
+
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, "1-301", 25, true, buildingId);
         Integer auditoriumId = response1.getBody().getId();
 
         ResponseEntity<Lecturer> response2 = createLecturer(restTemplate, url, "Dmitry", "Petrov", "Alexandrovich",
@@ -86,7 +92,9 @@ public class LectureTests extends TestBase {
 
     @Test
     public void testGetLectures() {
-        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, "1-301", 25, true);
+        int building1Id = createBuilding(restTemplate, url, "1").getBody().getId();
+
+        ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, "1-301", 25, true, building1Id);
         Integer auditorium1Id = response1.getBody().getId();
         ResponseEntity<Lecturer> response2 = createLecturer(restTemplate, url, "Dmitry", "Petrov", "Alexandrovich",
                 "pdarus@mail.ru", "peality", "d$8Fk4v2", "Assistant");
@@ -99,7 +107,7 @@ public class LectureTests extends TestBase {
         assertThat(response5.getStatusCode(), is(HttpStatus.CREATED));
 
 
-        ResponseEntity<Auditorium> response6 = createAuditorium(restTemplate, url, "1-303", 28, true);
+        ResponseEntity<Auditorium> response6 = createAuditorium(restTemplate, url, "1-303", 28, true, building1Id);
         Integer auditorium2Id = response6.getBody().getId();
         ResponseEntity<Lecturer> response7 = createLecturer(restTemplate, url,"Alexey", "Vasilev", "Nikolaevich",
                 "avral283@mail.ru", "to4ch55", "kwork181", "Assistant");

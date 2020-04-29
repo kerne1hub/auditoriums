@@ -11,10 +11,15 @@ import java.util.List;
 
 public class TestBase {
 
+    protected ResponseEntity<Building> createBuilding(TestRestTemplate restTemplate, String url, String name) {
+        Building building = new Building(name);
+        return restTemplate.postForEntity(url + "buildings", building, Building.class);
+    }
+
     protected ResponseEntity<Auditorium> createAuditorium(TestRestTemplate restTemplate, String url, String name,
-                                                                 int capacity, boolean isActive) {
+                                                                 int capacity, boolean isActive, int buildingId) {
         
-        Auditorium auditorium = new Auditorium(name, capacity, isActive);
+        Auditorium auditorium = new Auditorium(name, capacity, isActive, buildingId);
         return restTemplate.postForEntity(url + "auditoriums", auditorium, Auditorium.class);
     }
 

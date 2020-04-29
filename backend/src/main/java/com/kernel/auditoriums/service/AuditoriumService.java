@@ -2,6 +2,7 @@ package com.kernel.auditoriums.service;
 
 import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
+import com.kernel.auditoriums.repository.BuildingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,24 +11,26 @@ import java.util.List;
 
 @Service
 public class AuditoriumService {
-    private final AuditoriumRepository repository;
+    private final AuditoriumRepository auditoriumRepository;
+    private final BuildingRepository buildingRepository;
 
-    public AuditoriumService(AuditoriumRepository repository) {
-        this.repository = repository;
+    public AuditoriumService(AuditoriumRepository auditoriumRepository, BuildingRepository buildingRepository) {
+        this.auditoriumRepository = auditoriumRepository;
+        this.buildingRepository = buildingRepository;
     }
 
     public ResponseEntity<List<Auditorium>> getAuditoriums() {
-        List<Auditorium> auditoriums = repository.findAll();
+        List<Auditorium> auditoriums = auditoriumRepository.findAll();
         return ResponseEntity.ok(auditoriums);
     }
 
     public ResponseEntity<Auditorium> createAuditorium(Auditorium auditorium) {
-        Auditorium savedAuditorium = repository.save(auditorium);
-        return new ResponseEntity<>(savedAuditorium, HttpStatus.CREATED);
+        auditorium.setBuilding(buildingRepository.getOne(auditorium.getBuildingId()));
+        return new ResponseEntity<>(auditoriumRepository.save(auditorium), HttpStatus.CREATED);
     }
 
     public void deleteAuditorium(int auditoriumId) {
-        repository.deleteById(auditoriumId);
+        auditoriumRepository.deleteById(auditoriumId);
     }
 
     public ResponseEntity<Auditorium> updateAuditorium(Auditorium auditoriumFromDb, Auditorium auditorium) {
@@ -35,7 +38,7 @@ public class AuditoriumService {
         auditoriumFromDb.setCapacity(auditorium.getCapacity());
         auditoriumFromDb.setActive(auditorium.isActive());
 
-        return ResponseEntity.ok(repository.save(auditoriumFromDb));
+        return ResponseEntity.ok(auditoriumRepository.save(auditoriumFromDb));
     }
 
     public ResponseEntity<Auditorium> getAuditorium(Auditorium auditorium) {

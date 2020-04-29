@@ -9,4 +9,5 @@ public final class Views {
     public interface Group {}
     public interface Subject {}
     public interface Lecture {}
+    public interface Building {}
 }

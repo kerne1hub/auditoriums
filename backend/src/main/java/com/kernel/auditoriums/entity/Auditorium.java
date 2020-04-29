@@ -19,21 +19,29 @@ import java.util.Set;
 public class Auditorium {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class, Views.Building.class})
     private Integer id;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Lecture.class, Views.Building.class})
     private String name;
     @JsonView({Views.Default.class, Views.Auditorium.class})
     private int capacity;
     @JsonView({Views.Default.class, Views.Auditorium.class})
     private boolean active;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "building_id")
+    @JsonView(Views.Building.class)
+    private Building building;
     @JsonView(Views.Auditorium.class)
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
     private Set<Lecture> lectures;
 
-    public Auditorium(String name, int capacity, boolean active) {
+    @Column(name = "building_id", insertable = false, updatable = false)
+    private Integer buildingId;
+
+    public Auditorium(String name, int capacity, boolean active, int buildingId) {
         this.name = name;
         this.capacity = capacity;
         this.active = active;
+        this.buildingId = buildingId;
     }
 }
