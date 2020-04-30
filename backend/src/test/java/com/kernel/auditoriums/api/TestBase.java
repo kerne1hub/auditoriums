@@ -16,6 +16,13 @@ public class TestBase {
         return restTemplate.postForEntity(url + "buildings", building, Building.class);
     }
 
+    protected ResponseEntity<List<Building>> getBuildingList(TestRestTemplate restTemplate, String url) {
+
+        return restTemplate.exchange(url + "buildings", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Building>>() {
+                });
+    }
+
     protected ResponseEntity<Auditorium> createAuditorium(TestRestTemplate restTemplate, String url, String name,
                                                                  int capacity, boolean isActive, int buildingId) {
         

@@ -5,7 +5,6 @@ import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
 import com.kernel.auditoriums.repository.BuildingRepository;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = AuditoriumsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuditoriumTests extends TestBase{
+public class AuditoriumTests extends TestBase {
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -91,7 +90,7 @@ public class AuditoriumTests extends TestBase{
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
         int id = response1.getBody().getId();
-        ResponseEntity<Auditorium> response2 = restTemplate.getForEntity(url + "auditoriums" + "/" + id, Auditorium.class);
+        ResponseEntity<Auditorium> response2 = restTemplate.getForEntity(url + "auditoriums/" + id, Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
         assertThat(response2.getBody().getName(), is(auditorium1Name));
