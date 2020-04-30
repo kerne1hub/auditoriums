@@ -1,0 +1,16 @@
+<table border="1">
+  <thead>
+  <tr>
+    <th>Аудитория</th>
+    <th>Вместимость</th>
+    <th>Доступна?</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let auditorium of auditoriums">
+    <td>{{auditorium.name}}</td>
+    <td>{{auditorium.capacity}}</td>
+    <td>{{auditorium.active}}</td>
+  </tr>
+  </tbody>
+</table>
