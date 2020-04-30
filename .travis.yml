@@ -2,6 +2,8 @@ dist: trusty
 services:
   - mysql
 sudo: true
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 before_install:
   - mysql -e 'CREATE DATABASE auditoriums_test;'
   - mysql -u root -e "CREATE USER 'kernel'@'localhost' IDENTIFIED BY '${dbPass}';"

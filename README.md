@@ -1,6 +1,7 @@
 # Auditorium Agent
 
 [![Build Status](https://travis-ci.com/kerne1hub/auditoriums.svg?branch=master)](https://travis-ci.com/kerne1hub/auditoriums)
+[![codecov](https://codecov.io/gh/kerne1hub/auditoriums/branch/master/graph/badge.svg)](https://codecov.io/gh/kerne1hub/auditoriums)
 
 Auditorium Agent -- сервис, разрабатываемый для учебных  заведений, который позволяет смотреть занятость аудиторий.
 
