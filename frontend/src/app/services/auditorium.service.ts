@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Auditorium } from '../common/auditorium';
 import { map } from 'rxjs/operators';
@@ -13,8 +13,10 @@ export class AuditoriumService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAuditoriums(): Observable<Auditorium[]> {
-    return this.httpClient.get<Auditorium[]>(this.baseUrl)
+  getAuditoriums(buildingId: number | string, date: Date): Observable<Auditorium[]> {
+    return this.httpClient.get<Auditorium[]>(this.baseUrl, {params: new HttpParams()
+        .set('buildingId', `${buildingId}`)
+        .set('date', date.toISOString())})
       .pipe(map(response => response));
   }
 }

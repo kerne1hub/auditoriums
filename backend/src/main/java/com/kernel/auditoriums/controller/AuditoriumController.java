@@ -5,9 +5,11 @@ import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,9 +25,11 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    @JsonView(Views.Default.class)
-    public ResponseEntity<List<Auditorium>> getAuditoriums() {
-        return auditoriumService.getAuditoriums();
+    @JsonView(Views.Auditorium.class)
+    public ResponseEntity<List<Auditorium>> getAuditoriums(@RequestParam(value = "buildingId", required = false) Integer buildingId,
+                                                           @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'") Date date) {
+
+        return auditoriumService.getAuditoriums(buildingId, date);
     }
 
     @GetMapping("/{id}")

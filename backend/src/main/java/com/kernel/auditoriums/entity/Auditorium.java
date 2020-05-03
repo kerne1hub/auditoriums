@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,7 +34,7 @@ public class Auditorium {
     private Building building;
     @JsonView(Views.Auditorium.class)
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
-    private Set<Lecture> lectures;
+    private Set<Lecture> lectures = new HashSet<>();
 
     @Column(name = "building_id", insertable = false, updatable = false)
     private Integer buildingId;
@@ -44,4 +45,11 @@ public class Auditorium {
         this.active = active;
         this.buildingId = buildingId;
     }
+
+    public Auditorium(int id, String name, int capacity, boolean active, int buildingId) {
+        this(name, capacity, active, buildingId);
+        this.id = id;
+    }
+
+
 }
