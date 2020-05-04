@@ -15,7 +15,23 @@ body {
 }
 
 .level-6 {
-  background: #d0051c !important;
+  background: #f54c54 !important;
+}
+
+.level-5 {
+  background: #f58a91 !important;
+}
+
+.level-4 {
+  background: #f5c08f !important;
+}
+
+.level-3 {
+  background: #f5e28c !important;
+}
+
+.level-2 {
+  background: #dcf584 !important;
 }
 
 .level-1 {

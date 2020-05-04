@@ -27,7 +27,7 @@ public class AuditoriumController {
     @GetMapping
     @JsonView(Views.Auditorium.class)
     public ResponseEntity<List<Auditorium>> getAuditoriums(@RequestParam(value = "buildingId", required = false) Integer buildingId,
-                                                           @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'") Date date) {
+                                                           @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date date) {
 
         return auditoriumService.getAuditoriums(buildingId, date);
     }

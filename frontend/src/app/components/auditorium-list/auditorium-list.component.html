@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 mt-3">
     <h1 class="h2">Аудитории</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group mr-2">
@@ -46,28 +46,32 @@
       </thead>
       <tbody>
       <tr>
-        <td>Понедельник<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 1) }}"></td>
+        <td>Понедельник<br>{{ getDayOfWeek(1).toLocaleDateString() }}</td>
+        <ng-template #popContent let-lectureView="lectureView"><div [innerHTML]="lectureView"></div></ng-template>
+        <ng-template #popTitle let-auditorium="auditorium">Аудитория: {{ auditorium.name }}</ng-template>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 5).length }}" placement="left"
+            [ngbPopover]="popContent"
+            [popoverTitle]="popTitle" #p="ngbPopover" triggers="manual" container="body" (click)="toggleContent(p, auditorium, getLecturesByDay(auditorium.lectures, 5))"></td>
       </tr>
       <tr>
-        <td>Вторник<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 2) }}"></td>
+        <td>Вторник<br>{{ getDayOfWeek(2).toLocaleDateString() }}</td>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 2).length }}"></td>
       </tr>
       <tr>
-        <td>Среда<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 3) }}"></td>
+        <td>Среда<br>{{ getDayOfWeek(3).toLocaleDateString() }}</td>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 3).length }}"></td>
       </tr>
       <tr>
-        <td>Четверг<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 4) }}"></td>
+        <td>Четверг<br>{{ getDayOfWeek(4).toLocaleDateString() }}</td>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 4).length }}"></td>
       </tr>
       <tr>
-        <td>Пятница<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 5) }}"></td>
+        <td>Пятница<br>{{ getDayOfWeek(5).toLocaleDateString() }}</td>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 5).length }}"></td>
       </tr>
       <tr>
-        <td>Суббота<br></td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getByDay(auditorium.lectures, 6) }}"></td>
+        <td>Суббота<br>{{ getDayOfWeek(6).toLocaleDateString() }}</td>
+        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 6).length }}"></td>
       </tr>
       </tbody>
     </table>

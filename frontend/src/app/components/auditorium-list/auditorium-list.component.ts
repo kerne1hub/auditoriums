@@ -16,6 +16,7 @@ export class AuditoriumListComponent implements OnInit {
   buildings: Building[];
   auditoriums: Auditorium[];
   date: NgbDateStruct;
+  calendarDate: Date;
   currentBuildingId = 1;
 
   constructor(private auditoriumService: AuditoriumService,
@@ -23,15 +24,23 @@ export class AuditoriumListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listBuildings();
+    this.calendarDate = new Date();
+  }
+
+  private setCalendar() {
+    const dayOfWeek = this.calendarDate.getDay();
+    this.calendarDate.setDate(dayOfWeek !== 0 ? this.calendarDate.getDate() - (dayOfWeek - 1) : this.calendarDate.getDate() - 6);
   }
 
   getSchedule(buildingId: number) {
     this.currentBuildingId = buildingId;
-    const date = this.date == null ? new Date() : new Date(this.date.year, this.date.month - 1, this.date.day + 1);
+    this.calendarDate = this.date == null ? new Date() : new Date(this.date.year, this.date.month - 1, this.date.day);
 
-    this.auditoriumService.getAuditoriums(buildingId, date).subscribe(
+    this.auditoriumService.getAuditoriums(buildingId, this.calendarDate).subscribe(
       data => this.auditoriums = data
     );
+
+    this.setCalendar();
   }
 
   listBuildings() {
@@ -40,8 +49,21 @@ export class AuditoriumListComponent implements OnInit {
     );
   }
 
-  getByDay(lectures: Lecture[], day: number): number {
-    return lectures.filter(l => new Date(l.date).getDay() === day).length;
+  getLecturesByDay(lectures: Lecture[], day: number): Lecture[] {
+    return lectures.filter(l => new Date(l.date).getDay() === day);
+  }
+
+  getDayOfWeek(day: number): Date {
+    const date = new Date(this.calendarDate);
+    date.setDate(this.calendarDate.getDate() + (day - 1));
+    return date;
+  }
+
+  toggleContent(popover, auditorium: Auditorium, lectures: Lecture[]) {
+    let lectureView = '<b>Занятия:</b><br>';
+    lectures.forEach(l => lectureView += l.date + '<hr>');
+    console.log(lectureView);
+    popover.open({auditorium, lectureView});
   }
 
 }
