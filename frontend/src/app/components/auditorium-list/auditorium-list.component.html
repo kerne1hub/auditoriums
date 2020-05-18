@@ -45,33 +45,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>Понедельник<br>{{ getDayOfWeek(1).toLocaleDateString() }}</td>
-        <ng-template #popContent let-lectureView="lectureView"><div [innerHTML]="lectureView"></div></ng-template>
-        <ng-template #popTitle let-auditorium="auditorium">Аудитория: {{ auditorium.name }}</ng-template>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 5).length }}" placement="left"
-            [ngbPopover]="popContent"
-            [popoverTitle]="popTitle" #p="ngbPopover" triggers="manual" container="body" (click)="toggleContent(p, auditorium, getLecturesByDay(auditorium.lectures, 5))"></td>
-      </tr>
-      <tr>
-        <td>Вторник<br>{{ getDayOfWeek(2).toLocaleDateString() }}</td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 2).length }}"></td>
-      </tr>
-      <tr>
-        <td>Среда<br>{{ getDayOfWeek(3).toLocaleDateString() }}</td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 3).length }}"></td>
-      </tr>
-      <tr>
-        <td>Четверг<br>{{ getDayOfWeek(4).toLocaleDateString() }}</td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 4).length }}"></td>
-      </tr>
-      <tr>
-        <td>Пятница<br>{{ getDayOfWeek(5).toLocaleDateString() }}</td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 5).length }}"></td>
-      </tr>
-      <tr>
-        <td>Суббота<br>{{ getDayOfWeek(6).toLocaleDateString() }}</td>
-        <td *ngFor="let auditorium of auditoriums" class="level-{{ getLecturesByDay(auditorium.lectures, 6).length }}"></td>
+      <tr *ngFor="let day of days; index as i">
+        <td>
+          <div>{{ day }}</div>
+          <div>{{ getDayOfWeek(i+1).toLocaleDateString() }}</div>
+        </td>
+        <td *ngFor="let auditorium of auditoriums" class="dropleft level-{{ getLecturesByDay(auditorium.lectures, i+1).length }}">
+          <div class="dropdown-menu" *ngIf="getLecturesByDay(auditorium.lectures, i+1).length > 0">
+            <app-lectures-view [lectures]="getLecturesByDay(auditorium.lectures, i+1)" #menu></app-lectures-view>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>

@@ -1,0 +1,22 @@
+table.table-bordered{
+  border:1px solid darkgray;
+}
+table.table-bordered > thead > tr > th{
+  border:1px solid gray;
+}
+table.table-bordered > tbody > tr > td{
+  border:1px solid darkgray;
+}
+
+.dropleft:hover > .dropdown-menu {
+  display: block;
+}
+.dropleft > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
+}
+
+.dropdown-menu {
+  min-width: 240px !important;
+  border-color: black;
+}

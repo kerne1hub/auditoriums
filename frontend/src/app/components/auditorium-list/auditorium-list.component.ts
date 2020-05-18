@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { Auditorium } from '../../common/auditorium';
 import { AuditoriumService } from '../../services/auditorium.service';
 import { BuildingService } from '../../services/building.service';
 import { Building } from '../../common/building';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {Lecture} from '../../common/lecture';
+import {LecturesViewComponent} from '../lectures-view/lectures-view.component';
 
 @Component({
   selector: 'app-auditorium-list',
@@ -12,12 +13,14 @@ import {Lecture} from '../../common/lecture';
   styleUrls: ['./auditorium-list.component.css']
 })
 export class AuditoriumListComponent implements OnInit {
-
   buildings: Building[];
   auditoriums: Auditorium[];
   date: NgbDateStruct;
   calendarDate: Date;
   currentBuildingId = 1;
+  days: string[] = [
+    'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
+  ];
 
   constructor(private auditoriumService: AuditoriumService,
               private buildingService: BuildingService) { }
@@ -57,13 +60,6 @@ export class AuditoriumListComponent implements OnInit {
     const date = new Date(this.calendarDate);
     date.setDate(this.calendarDate.getDate() + (day - 1));
     return date;
-  }
-
-  toggleContent(popover, auditorium: Auditorium, lectures: Lecture[]) {
-    let lectureView = '<b>Занятия:</b><br>';
-    lectures.forEach(l => lectureView += l.date + '<hr>');
-    console.log(lectureView);
-    popover.open({auditorium, lectureView});
   }
 
 }

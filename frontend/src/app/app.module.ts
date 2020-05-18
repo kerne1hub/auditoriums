@@ -6,19 +6,22 @@ import { AppComponent } from './app.component';
 import { AuditoriumListComponent } from './components/auditorium-list/auditorium-list.component';
 import { AuditoriumService } from './services/auditorium.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { LecturesViewComponent } from './components/lectures-view/lectures-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuditoriumListComponent
+    AuditoriumListComponent,
+    LecturesViewComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgbModule,
-    FormsModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
   providers: [
     AuditoriumService
   ],
