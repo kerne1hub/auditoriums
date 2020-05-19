@@ -52,7 +52,7 @@
         </td>
         <td *ngFor="let auditorium of auditoriums" class="dropleft level-{{ getLecturesByDay(auditorium.lectures, i+1).length }}">
           <div class="dropdown-menu" *ngIf="getLecturesByDay(auditorium.lectures, i+1).length > 0">
-            <app-lectures-view [lectures]="getLecturesByDay(auditorium.lectures, i+1)" #menu></app-lectures-view>
+            <app-lectures-view [lectures]="getLecturesByDay(auditorium.lectures, i+1)"></app-lectures-view>
           </div>
         </td>
       </tr>

@@ -1,9 +1,10 @@
 <div class="justify-content-center m-1" id="lectures_view">
   <div class="list-group">
     <div *ngFor="let lecture of lectures">
-      <small>{{ lecture.date | date: 'hh:mm'}}</small>
+      <small>{{ lecture.date | date: 'hh:mm'}} Группа: {{ lecture.group.name }}</small>
       <p class="mb-1">{{ lecture.subject.name }}</p>
       <small>{{ lecture.lecturer.position }},  {{ lecture.lecturer.lastName }} {{ lecture.lecturer.firstName }} {{ lecture.lecturer.patronymic }}</small>
+      <div class="border-top bg-dark"></div>
     </div>
   </div>
 </div>

@@ -1,11 +1,10 @@
-import {Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import { Auditorium } from '../../common/auditorium';
-import { AuditoriumService } from '../../services/auditorium.service';
-import { BuildingService } from '../../services/building.service';
-import { Building } from '../../common/building';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {Auditorium} from '../../common/auditorium';
+import {AuditoriumService} from '../../services/auditorium.service';
+import {BuildingService} from '../../services/building.service';
+import {Building} from '../../common/building';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Lecture} from '../../common/lecture';
-import {LecturesViewComponent} from '../lectures-view/lectures-view.component';
 
 @Component({
   selector: 'app-auditorium-list',
@@ -40,7 +39,10 @@ export class AuditoriumListComponent implements OnInit {
     this.calendarDate = this.date == null ? new Date() : new Date(this.date.year, this.date.month - 1, this.date.day);
 
     this.auditoriumService.getAuditoriums(buildingId, this.calendarDate).subscribe(
-      data => this.auditoriums = data
+      data => {
+        this.auditoriums = data;
+        this.deserializeContent(data);
+      }
     );
 
     this.setCalendar();
@@ -60,6 +62,35 @@ export class AuditoriumListComponent implements OnInit {
     const date = new Date(this.calendarDate);
     date.setDate(this.calendarDate.getDate() + (day - 1));
     return date;
+  }
+
+  private deserializeContent(data: Auditorium[]) {
+    const lectureMap = new Map();
+    const subjectMap = new Map();
+    const groupMap = new Map();
+
+    data.forEach(a => {
+      a.lectures.forEach(l => {
+        if (typeof l.lecturer === 'object') {
+          lectureMap.set(l.lecturer.id, l.lecturer);
+        } else if (typeof l.lecturer === 'number') {
+          l.lecturer = lectureMap.get(l.lecturer);
+        }
+
+        if (typeof l.subject === 'object') {
+          subjectMap.set(l.subject.id, l.subject);
+        } else if (typeof l.subject === 'number') {
+          l.subject = subjectMap.get(l.subject);
+        }
+
+        if (typeof l.group === 'object') {
+          groupMap.set(l.group.id, l.group);
+        } else if (typeof l.group === 'number') {
+          l.group = groupMap.get(l.group);
+        }
+      });
+    });
+
   }
 
 }
