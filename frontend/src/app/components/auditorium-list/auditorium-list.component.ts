@@ -20,6 +20,8 @@ export class AuditoriumListComponent implements OnInit {
   days: string[] = [
     'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
   ];
+  congestion = 0;
+  progressStyle = 'success';
 
   constructor(private auditoriumService: AuditoriumService,
               private buildingService: BuildingService) { }
@@ -27,6 +29,7 @@ export class AuditoriumListComponent implements OnInit {
   ngOnInit(): void {
     this.listBuildings();
     this.calendarDate = new Date();
+    this.getSchedule(this.currentBuildingId);
   }
 
   private setCalendar() {
@@ -68,6 +71,7 @@ export class AuditoriumListComponent implements OnInit {
     const lectureMap = new Map();
     const subjectMap = new Map();
     const groupMap = new Map();
+    let lectureCount = 0;
 
     data.forEach(a => {
       a.lectures.forEach(l => {
@@ -76,6 +80,8 @@ export class AuditoriumListComponent implements OnInit {
         } else if (typeof l.lecturer === 'number') {
           l.lecturer = lectureMap.get(l.lecturer);
         }
+
+        lectureCount++;
 
         if (typeof l.subject === 'object') {
           subjectMap.set(l.subject.id, l.subject);
@@ -91,6 +97,18 @@ export class AuditoriumListComponent implements OnInit {
       });
     });
 
+    this.setCongestion(lectureCount / (data.length*6));
   }
 
+  setCongestion(congestion: number) {
+    this.congestion = congestion * 100;
+
+    if (this.congestion > 50) {
+      this.progressStyle = 'warning';
+    } else if (this.congestion > 90) {
+      this.progressStyle = 'danger';
+    } else {
+      this.progressStyle = 'success';
+    }
+  }
 }

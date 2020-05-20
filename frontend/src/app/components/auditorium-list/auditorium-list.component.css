@@ -8,6 +8,14 @@ table.table-bordered > tbody > tr > td{
   border:1px solid darkgray;
 }
 
+th.cell {
+  min-width: 60px;
+}
+
+th.cell-head {
+  min-width: 255px;
+}
+
 .dropleft:hover > .dropdown-menu {
   display: block;
 }
@@ -21,3 +29,6 @@ table.table-bordered > tbody > tr > td{
   border-color: black;
 }
 
+.progress {
+  width: 200px;
+}

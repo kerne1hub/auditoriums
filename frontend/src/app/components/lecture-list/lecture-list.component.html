@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="btn-toolbar justify-content-between mb-3">
+    <div class="btn-toolbar">
+      <div class="btn-group mt-3 mr-3 d-none d-sm-block">
+        <button class="btn btn-outline-secondary" type="button">Группа</button>
+        <button class="btn btn-outline-secondary" type="button">Студент</button>
+        <button class="btn btn-outline-secondary" type="button">Преподаватель</button>
+        <button class="btn btn-outline-secondary" type="button">Аудитория</button>
+      </div>
+
+      <div class="input-group mt-3 mr-3">
+        <input type="text" class="form-control" placeholder="Группа" aria-label="Группа">
+      </div>
+
+      <form class="form-inline mt-3 mr-3">
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                   ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                <i class="fa fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="btn-group mt-3 mr-3 d-none d-sm-block">
+        <button class="btn btn-outline-secondary" type="button"><span class="fa fa-arrow-left"></span></button>
+        <button class="btn btn-outline-secondary" type="button"><span class="fa fa-arrow-right"></span></button>
+      </div>
+    </div>
+  </div>
+
+    <div class="card border-dark mb-3">
+      <div class="row">
+        <div class="col-sm-1 mr-0 pr-0 text-center d-flex align-items-center text-wrap">
+          <div class="card-body"><p class="align-middle">Пн 18.05</p></div>
+        </div>
+
+        <div class="col-sm-11 ml-0">
+          <div class="card" style="height: 180px">
+            <div class="card-header"><b>Сетевые технологии и веб-программирование</b></div>
+            <div class="card-body text-dark">
+              <h6 class="card-subtitle mb-2 text-muted">11:35 - 13:05</h6>
+              <div class="card-text mb-0"><span class="fa fa-map-marker-alt fa-fw"></span> 8-201</div>
+              <div class="card-text"><span class="fa fa-graduation-cap fa-fw"></span> Группа ПЭ-171</div>
+              <div class="card-text"><span class="fa fa-user-alt fa-fw"></span> Ст.П., К.Н. Колмогорова С.С.</div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>

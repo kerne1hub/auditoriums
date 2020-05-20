@@ -1,10 +1,10 @@
 <div class="justify-content-center m-1" id="lectures_view">
   <div class="list-group">
-    <div *ngFor="let lecture of lectures">
+    <div *ngFor="let lecture of lectures; let i = index">
       <small>{{ lecture.date | date: 'hh:mm'}} Группа: {{ lecture.group.name }}</small>
       <p class="mb-1">{{ lecture.subject.name }}</p>
       <small>{{ lecture.lecturer.position }},  {{ lecture.lecturer.lastName }} {{ lecture.lecturer.firstName }} {{ lecture.lecturer.patronymic }}</small>
-      <div class="border-top bg-dark"></div>
+      <hr class="my-2" *ngIf="i <  lectures.length - 1">
     </div>
   </div>
 </div>

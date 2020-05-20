@@ -1,7 +1,14 @@
-<div class="container">
 
+<div class="container">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 mt-3">
     <h1 class="h2">Аудитории</h1>
+    <div class="btn-group">
+      <div class="mr-1">Загрузка:</div>
+      <div class="progress m-0" style="height: 25px">
+        <div class="progress-bar bg-{{progressStyle}}" role="progressbar" [style.width.%]="congestion" [attr.aria-valuenow]="congestion" aria-valuemin="0" aria-valuemax="100">
+          {{congestion | number: '1.1-1'}}%</div>
+      </div>
+    </div>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group mr-2">
         <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -11,7 +18,7 @@
       <form class="form-inline">
         <div class="form-group">
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" (keyup.enter)="getSchedule(currentBuildingId)"
                    ngbDatepicker #d="ngbDatepicker" (dateSelect)="getSchedule(currentBuildingId)">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
@@ -40,8 +47,8 @@
     <table class="table table-bordered table-sm">
       <thead>
       <tr>
-        <th>Дата</th>
-        <th *ngFor="let auditorium of auditoriums">{{ auditorium.name }}</th>
+        <th class="cell-head">Дата</th>
+        <th class="cell" *ngFor="let auditorium of auditoriums">{{ auditorium.name }}</th>
       </tr>
       </thead>
       <tbody>
