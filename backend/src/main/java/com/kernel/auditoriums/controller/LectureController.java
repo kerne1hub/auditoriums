@@ -5,9 +5,11 @@ import com.kernel.auditoriums.entity.Lecture;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.LectureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,9 @@ public class LectureController {
 
     @GetMapping
     @JsonView(Views.Lecture.class)
-    public ResponseEntity<List<Lecture>> getLectures() {
-        return lectureService.getLectures();
+    public ResponseEntity<List<Lecture>> getLectures(@RequestParam(value = "groupId", required = false) Long groupId,
+                                                     @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date date) {
+        return lectureService.getLectures(groupId, date);
     }
 
     @GetMapping("/{id}")

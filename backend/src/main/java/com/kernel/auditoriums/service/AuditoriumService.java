@@ -48,7 +48,7 @@ public class AuditoriumService {
                     auditoriumMap.put(auditorium.getId(), auditorium);
                 }
 
-                List<Lecture> lectures = lectureRepository.findAllByAuditoriumIdInAndDate(auditoriumMap.keySet(), startWeekDate, endWeekDate);
+                List<Lecture> lectures = lectureRepository.findAllByAuditoriumIdInAndDateBetween(auditoriumMap.keySet(), startWeekDate, endWeekDate);
 
                 for (Lecture lecture: lectures) {
                     auditoriumMap.get(lecture.getAuditoriumId()).getLectures().add(lecture);

@@ -9,14 +9,15 @@
       </div>
 
       <div class="input-group mt-3 mr-3">
-        <input type="text" class="form-control" placeholder="Группа" aria-label="Группа">
+        <input type="text" class="form-control" [(ngModel)]="groupModel" [ngbTypeahead]="searchGroup"
+               [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectGroup($event.item)" placeholder="Группа" aria-label="Группа" />
       </div>
 
       <form class="form-inline mt-3 mr-3">
         <div class="form-group">
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                   ngbDatepicker #d="ngbDatepicker">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" (keyup.enter)="getSchedule(currentGroupId)"
+                   ngbDatepicker #d="ngbDatepicker" (dateSelect)="getSchedule(currentGroupId)">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
                 <i class="fa fa-calendar-alt"></i>
@@ -27,30 +28,32 @@
       </form>
 
       <div class="btn-group mt-3 mr-3 d-none d-sm-block">
-        <button class="btn btn-outline-secondary" type="button"><span class="fa fa-arrow-left"></span></button>
-        <button class="btn btn-outline-secondary" type="button"><span class="fa fa-arrow-right"></span></button>
+        <button class="btn btn-outline-secondary" type="button" (click)="setPrevWeek()"><span class="fa fa-arrow-left"></span></button>
+        <button class="btn btn-outline-secondary" type="button" (click)="setNextWeek()"><span class="fa fa-arrow-right"></span></button>
       </div>
     </div>
   </div>
 
-    <div class="card border-dark mb-3">
+  <div *ngFor="let lectures of lectureMap | keyvalue">
+    <div class="card border-dark mb-3" *ngIf="lectures.value.length > 0">
       <div class="row">
         <div class="col-sm-1 mr-0 pr-0 text-center d-flex align-items-center text-wrap">
-          <div class="card-body"><p class="align-middle">Пн 18.05</p></div>
+          <div class="card-body"><p class="align-middle">{{ getDayOfWeek(lectures.key) | date: 'E, d.MM' }}</p></div>
         </div>
 
         <div class="col-sm-11 ml-0">
-          <div class="card" style="height: 180px">
-            <div class="card-header"><b>Сетевые технологии и веб-программирование</b></div>
+          <div class="card" style="height: 180px; border:1px solid darkgray;" *ngFor="let lecture of lectures.value">
+            <div class="card-header"><b>{{ lecture.subject.name }}</b><h6 class="card-subtitle text-muted">Лабораторная работа</h6></div>
             <div class="card-body text-dark">
-              <h6 class="card-subtitle mb-2 text-muted">11:35 - 13:05</h6>
-              <div class="card-text mb-0"><span class="fa fa-map-marker-alt fa-fw"></span> 8-201</div>
-              <div class="card-text"><span class="fa fa-graduation-cap fa-fw"></span> Группа ПЭ-171</div>
-              <div class="card-text"><span class="fa fa-user-alt fa-fw"></span> Ст.П., К.Н. Колмогорова С.С.</div>
+              <h6 class="card-subtitle mb-2 text-muted">{{ lecture.date | date: 'H:mm' }}</h6>
+              <div class="card-text mb-0"><span class="fa fa-map-marker-alt fa-fw"></span> {{ lecture.auditorium.name }}</div>
+              <div class="card-text"><span class="fa fa-graduation-cap fa-fw"></span> Группа {{ lecture.group.name }}</div>
+              <div class="card-text"><span class="fa fa-user-alt fa-fw"></span> {{ lecture.lecturer.position }} {{ lecture.lecturer.lastName }} {{ lecture.lecturer.firstName }} {{ lecture.lecturer.patronymic }}</div>
             </div>
           </div>
         </div>
 
     </div>
   </div>
+</div>
 </div>

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,8 +29,29 @@ public class LectureService {
         this.subjectRepository = subjectRepository;
     }
 
-    public ResponseEntity<List<Lecture>> getLectures() {
-        return ResponseEntity.ok(lectureRepository.findAll());
+    private Date setDayOfWeek(Date date, int dayOfWeek) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        return calendar.getTime();
+    }
+
+    public ResponseEntity<List<Lecture>> getLectures(Long groupId, Date date) {
+        if (groupId == null && date == null) {
+            return ResponseEntity.ok(lectureRepository.findAll());
+        }
+        if (groupId != null && date == null) {
+            return ResponseEntity.ok(lectureRepository.findAllByGroupId(groupId));
+        }
+        if (groupId != null) {
+            Date startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
+            Date endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
+
+            return ResponseEntity.ok(lectureRepository.findAllByGroupIdAndDateBetweenOrderByDate(groupId, startWeekDate, endWeekDate));
+        }
+        Date startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
+        Date endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
+        return ResponseEntity.ok(lectureRepository.findAllByDateBetween(startWeekDate, endWeekDate));
     }
 
     public ResponseEntity<Lecture> getLectureDetails(Lecture lecture) {

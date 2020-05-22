@@ -19,7 +19,11 @@ public class GroupService {
         this.repository = repository;
     }
 
-    public ResponseEntity<List<Group>> getGroups() {
+    public ResponseEntity<List<Group>> getGroups(String keyword) {
+        if (keyword != null) {
+            List<Group> allByNameContains = repository.findAllByNameContains(keyword);
+            return ResponseEntity.ok(allByNameContains);
+        }
         return ResponseEntity.ok(repository.findAll());
     }
 

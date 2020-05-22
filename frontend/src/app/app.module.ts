@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { appRoutingModule } from './app.routing';
@@ -10,13 +10,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LecturesViewComponent } from './components/lectures-view/lectures-view.component';
 import { LectureListComponent } from './components/lecture-list/lecture-list.component';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
     AppComponent,
     AuditoriumListComponent,
     LecturesViewComponent,
-    LectureListComponent
+    LectureListComponent,
   ],
   imports: [
     appRoutingModule,
@@ -27,7 +31,8 @@ import { LectureListComponent } from './components/lecture-list/lecture-list.com
     ReactiveFormsModule
   ],
   providers: [
-    AuditoriumService
+    AuditoriumService,
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })

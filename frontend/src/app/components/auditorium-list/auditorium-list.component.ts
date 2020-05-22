@@ -12,6 +12,7 @@ import {Lecture} from '../../common/lecture';
   styleUrls: ['./auditorium-list.component.css']
 })
 export class AuditoriumListComponent implements OnInit {
+
   buildings: Building[];
   auditoriums: Auditorium[];
   date: NgbDateStruct;
