@@ -24,7 +24,7 @@ public class GroupController {
 
     @GetMapping
     @JsonView(Views.Default.class)
-    public ResponseEntity<List<Group>> getGroups(@RequestParam("name") String keyword) {
+    public ResponseEntity<List<Group>> getGroups(@RequestParam(value = "name", required = false) String keyword) {
         return groupService.getGroups(keyword);
     }
 
