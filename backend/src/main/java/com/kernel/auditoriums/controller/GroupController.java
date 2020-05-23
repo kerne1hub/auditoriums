@@ -1,6 +1,5 @@
 package com.kernel.auditoriums.controller;
 
-import ch.qos.logback.classic.ViewStatusMessagesServlet;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kernel.auditoriums.entity.Group;
 import com.kernel.auditoriums.entity.utils.Views;

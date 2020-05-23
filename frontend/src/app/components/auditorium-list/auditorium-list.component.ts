@@ -30,6 +30,7 @@ export class AuditoriumListComponent implements OnInit {
   ngOnInit(): void {
     this.listBuildings();
     this.calendarDate = new Date();
+    this.fillDate();
     this.getSchedule(this.currentBuildingId);
   }
 
@@ -62,10 +63,28 @@ export class AuditoriumListComponent implements OnInit {
     return lectures.filter(l => new Date(l.date).getDay() === day);
   }
 
+  private fillDate() {
+    this.date = {
+      year: this.calendarDate.getFullYear(),
+      month: this.calendarDate.getMonth() + 1,
+      day: this.calendarDate.getDate()
+    }
+  }
+
   getDayOfWeek(day: number): Date {
     const date = new Date(this.calendarDate);
     date.setDate(this.calendarDate.getDate() + (day - 1));
     return date;
+  }
+
+  setPrevWeek() {
+    this.date = {...this.date, day: this.date.day-7};
+    this.getSchedule(this.currentBuildingId);
+  }
+
+  setNextWeek() {
+    this.date = {...this.date, day: this.date.day+7};
+    this.getSchedule(this.currentBuildingId);
   }
 
   private deserializeContent(data: Auditorium[]) {

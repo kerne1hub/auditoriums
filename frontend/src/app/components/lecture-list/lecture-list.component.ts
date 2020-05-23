@@ -27,6 +27,7 @@ export class LectureListComponent implements OnInit {
 
   ngOnInit(): void {
     this.calendarDate = new Date();
+    this.fillDate();
     this.getSchedule(this.currentGroupId);
   }
 
@@ -59,9 +60,23 @@ export class LectureListComponent implements OnInit {
     this.setCalendar();
   }
 
+  // month values in 0..11
+  private fillDate() {
+    this.date = {
+      year: this.calendarDate.getFullYear(),
+      month: this.calendarDate.getMonth() + 1,
+      day: this.calendarDate.getDate()
+    }
+  }
+
   private getLecturesByDay(data: Lecture[]) {
+    this.lectureMap.clear();
+
     for (let i = 1; i < 7; i++) {
-      this.lectureMap.set(i, data.filter(l => new Date(l.date).getDay() === i))
+      const lectures = data.filter(l => new Date(l.date).getDay() === i);
+      if (lectures.length > 0) {
+        this.lectureMap.set(i, lectures);
+      }
     }
   }
 
