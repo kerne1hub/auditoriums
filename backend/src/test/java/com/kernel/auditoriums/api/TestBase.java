@@ -1,71 +1,98 @@
 package com.kernel.auditoriums.api;
 
+import com.kernel.auditoriums.api.dto.AuthResponseDto;
 import com.kernel.auditoriums.entity.*;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 import java.util.List;
 
 public class TestBase {
 
-    protected ResponseEntity<Building> createBuilding(TestRestTemplate restTemplate, String url, String name) {
-        Building building = new Building(name);
-        return restTemplate.postForEntity(url + "buildings", building, Building.class);
+    private String token;
+
+    public long registerAndAuth(PasswordEncoder encoder, User user, TestRestTemplate restTemplate, int port) {
+        String password = user.getPassword();
+        ResponseEntity<Lecturer> userResponseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/lecturers", user, Lecturer.class);
+
+        user.setPassword(password);
+        ResponseEntity<AuthResponseDto> responseEntity = restTemplate.postForEntity("http://localhost:" + port + "/api/auth/login", user, AuthResponseDto.class);
+        token = responseEntity.getBody().getToken();
+        return responseEntity.getBody().getUser().getId();
     }
 
-    protected ResponseEntity<List<Building>> getBuildingList(TestRestTemplate restTemplate, String url) {
+//    Set JWT header
+    private<T> HttpEntity<T> getEntityWithAuth(T entity) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        return new HttpEntity<>(entity, headers);
+    }
 
-        return restTemplate.exchange(url + "buildings", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Building>>() {
-                });
+    protected ResponseEntity<Building> createBuilding(TestRestTemplate restTemplate, String url, String name) {
+        Building building = new Building(name);
+        HttpEntity<Building> entity = getEntityWithAuth(building);
+        return restTemplate.postForEntity(url, entity, Building.class);
     }
 
     protected ResponseEntity<Auditorium> createAuditorium(TestRestTemplate restTemplate, String url, String name,
                                                                  int capacity, boolean isActive, int buildingId) {
         
         Auditorium auditorium = new Auditorium(name, capacity, isActive, buildingId);
-        return restTemplate.postForEntity(url + "auditoriums", auditorium, Auditorium.class);
+        HttpEntity<Auditorium> entity = getEntityWithAuth(auditorium);
+        return restTemplate.postForEntity(url, entity, Auditorium.class);
     }
 
-    protected ResponseEntity<List<Auditorium>> getAuditoriumList(TestRestTemplate restTemplate, String url) {
-        
-        return restTemplate.exchange(url + "auditoriums", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<Auditorium>>() {
-                });
-    }
-
-    protected ResponseEntity<Lecturer> createLecturer(TestRestTemplate restTemplate, String url, String firstName,
-                                                             String lastName, String patronymic, String email,
-                                                             String login, String password, String position) {
-        
-        Lecturer lecturer = new Lecturer(firstName, lastName, patronymic, email, login, password, position);
-        return restTemplate.postForEntity(url + "lecturers", lecturer, Lecturer.class);
+    protected ResponseEntity<Lecturer> createLecturer(TestRestTemplate restTemplate, String url, Lecturer lecturer) {
+        return restTemplate.postForEntity(url, lecturer, Lecturer.class);
     }
 
     protected ResponseEntity<Subject> createSubject(TestRestTemplate restTemplate, String url, String name) {
         
         Subject subject = new Subject(name);
-        return restTemplate.postForEntity(url + "subjects", subject, Subject.class);
+        HttpEntity<Subject> entity = getEntityWithAuth(subject);
+        return restTemplate.postForEntity(url, entity, Subject.class);
     }
 
     protected ResponseEntity<Group> createGroup(TestRestTemplate restTemplate, String url, String name) {
-        
         Group group = new Group(name);
-        return restTemplate.postForEntity(url + "groups", group, Group.class);
+        HttpEntity<Group> entity = getEntityWithAuth(group);
+        return restTemplate.postForEntity(url, entity, Group.class);
     }
 
     protected ResponseEntity<Lecture> createLecture(TestRestTemplate restTemplate, String url, Long lecturerId,
                                                            Integer subjectId, Long groupId, Integer auditoriumId) {
         Lecture lecture = new Lecture(new Date(), lecturerId, subjectId, groupId, auditoriumId);
-        return restTemplate.postForEntity(url + "lectures", lecture, Lecture.class);
+        HttpEntity<Lecture> entity = getEntityWithAuth(lecture);
+        return restTemplate.postForEntity(url, entity, Lecture.class);
     }
 
     protected ResponseEntity<List<Lecture>> getLectureList(TestRestTemplate restTemplate, String url) {
-        return restTemplate.exchange(url + "lectures", HttpMethod.GET, null,
+        return restTemplate.exchange(url, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Lecture>>() {
                 });
+    }
+
+    protected<T> ResponseEntity<T> editEntity(TestRestTemplate restTemplate, String url, long id, T entity, Class<T> entityClass) {
+        HttpEntity<T> httpEntity = getEntityWithAuth(entity);
+        return restTemplate.exchange(url + "/" + id, HttpMethod.PUT, httpEntity, entityClass);
+    }
+
+    protected<T> ResponseEntity<List<T>> getEntityList(TestRestTemplate restTemplate, String url, ParameterizedTypeReference<List<T>> typeReference ) {
+        return restTemplate.exchange(url, HttpMethod.GET, null, typeReference);
+    }
+
+    protected<T> ResponseEntity<T> getEntity(TestRestTemplate restTemplate, String url, long id, Class<T> entityClass) {
+        return restTemplate.getForEntity(url + "/" + id, entityClass);
+    }
+
+    protected ResponseEntity<Void> deleteEntity(TestRestTemplate restTemplate, String url, long id) {
+        HttpEntity<Void> entity = getEntityWithAuth(null);
+        return restTemplate.exchange(url + "/" + id, HttpMethod.DELETE, entity, Void.class);
     }
 }

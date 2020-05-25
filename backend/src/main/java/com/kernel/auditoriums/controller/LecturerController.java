@@ -2,10 +2,13 @@ package com.kernel.auditoriums.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kernel.auditoriums.entity.Lecturer;
+import com.kernel.auditoriums.entity.User;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,9 +44,9 @@ public class LecturerController {
 
     @PutMapping("/{id}")
     @JsonView(Views.Default.class)
-    public ResponseEntity<Lecturer> editLecturerDetails(@PathVariable("id") Lecturer lecturerFromDb,
+    public ResponseEntity<Lecturer> editLecturerDetails(@AuthenticationPrincipal Authentication authentication, @PathVariable("id") Lecturer lecturerFromDb,
                                                         @RequestBody Lecturer lecturer) {
-        return lecturerService.editLecturer(lecturerFromDb, lecturer);
+        return lecturerService.editLecturer(authentication.getName(), lecturerFromDb, lecturer);
     }
 
     @DeleteMapping("/{id}")

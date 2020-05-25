@@ -2,8 +2,10 @@ package com.kernel.auditoriums.api;
 
 import com.kernel.auditoriums.AuditoriumsApplication;
 import com.kernel.auditoriums.entity.Auditorium;
+import com.kernel.auditoriums.entity.Lecturer;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
 import com.kernel.auditoriums.repository.BuildingRepository;
+import com.kernel.auditoriums.repository.LecturerRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,11 +36,17 @@ public class AuditoriumTests extends TestBase {
     private AuditoriumRepository auditoriumRepository;
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private LecturerRepository lecturerRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @LocalServerPort
     protected int port;
 
     private String url;
+    private String buildingUrl;
 
     @Before
     public void setUp() {
@@ -46,12 +54,19 @@ public class AuditoriumTests extends TestBase {
         auditoriumRepository.flush();
         buildingRepository.deleteAll();
         buildingRepository.flush();
-        url = "http://localhost:" + port + "/api/";
+        lecturerRepository.deleteAll();
+        lecturerRepository.flush();
+
+        url = "http://localhost:" + port + "/api/auditoriums";
+        buildingUrl = "http://localhost:" + port + "/api/buildings";
+
+        Lecturer user = new Lecturer("User", "Test", null, "user@mail.cc", "login", "password", "Lecturer");
+        registerAndAuth(passwordEncoder, user, restTemplate, port);
     }
 
     @Test
     public void testCreateAuditorium() {
-        int buildingId = createBuilding(restTemplate, url, "1").getBody().getId();
+        int buildingId = createBuilding(restTemplate, buildingUrl, "1").getBody().getId();
 
         String auditoriumName = "1-303";
         ResponseEntity<Auditorium> response = createAuditorium(restTemplate, url, auditoriumName, 25, true, buildingId);
@@ -62,8 +77,8 @@ public class AuditoriumTests extends TestBase {
 
     @Test
     public void testGetAuditoriums() {
-        int building1Id = createBuilding(restTemplate, url, "1").getBody().getId();
-        int building2Id = createBuilding(restTemplate, url, "6").getBody().getId();
+        int building1Id = createBuilding(restTemplate, buildingUrl, "1").getBody().getId();
+        int building2Id = createBuilding(restTemplate, buildingUrl, "6").getBody().getId();
 
         String auditorium1Name = "1-301";
         ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true, building1Id);
@@ -73,7 +88,7 @@ public class AuditoriumTests extends TestBase {
         ResponseEntity<Auditorium> response2 = createAuditorium(restTemplate, url, auditorium2Name, 26, true, building2Id);
         assertThat(response2.getStatusCode(), is(HttpStatus.CREATED));
 
-        ResponseEntity<List<Auditorium>> response3 = getAuditoriumList(restTemplate, url);
+        ResponseEntity<List<Auditorium>> response3 = getEntityList(restTemplate, url, new ParameterizedTypeReference<List<Auditorium>>() {});
         List<Auditorium> auditoriums = response3.getBody();
         assertThat(auditoriums, notNullValue());
         assertThat(auditoriums.size(), is(2));
@@ -83,14 +98,14 @@ public class AuditoriumTests extends TestBase {
 
     @Test
     public void testGetAuditoriumDetails() {
-        int buildingId = createBuilding(restTemplate, url, "1").getBody().getId();
+        int buildingId = createBuilding(restTemplate, buildingUrl, "1").getBody().getId();
 
         String auditorium1Name = "1-301";
         ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true, buildingId);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
         int id = response1.getBody().getId();
-        ResponseEntity<Auditorium> response2 = restTemplate.getForEntity(url + "auditoriums/" + id, Auditorium.class);
+        ResponseEntity<Auditorium> response2 = getEntity(restTemplate, url , id, Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
         assertThat(response2.getBody().getName(), is(auditorium1Name));
@@ -98,7 +113,7 @@ public class AuditoriumTests extends TestBase {
 
     @Test
     public void testUpdateAuditoriumDetailsOk() {
-        int buildingId = createBuilding(restTemplate, url, "1").getBody().getId();
+        int buildingId = createBuilding(restTemplate, buildingUrl, "1").getBody().getId();
 
         String auditorium1Name = "1-301";
         ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true, buildingId);
@@ -109,8 +124,7 @@ public class AuditoriumTests extends TestBase {
         auditorium.setName("1-303А");
         auditorium.setCapacity(24);
         auditorium.setActive(false);
-        ResponseEntity<Auditorium> response2 = restTemplate.exchange(url + "auditoriums" + "/" + id, HttpMethod.PUT,
-                new HttpEntity<>(auditorium), Auditorium.class);
+        ResponseEntity<Auditorium> response2 = editEntity(restTemplate, url, id, auditorium, Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
 
@@ -120,18 +134,18 @@ public class AuditoriumTests extends TestBase {
 
     @Test
     public void testDeleteAuditorium() {
-        int buildingId = createBuilding(restTemplate, url, "1").getBody().getId();
+        int buildingId = createBuilding(restTemplate, buildingUrl, "1").getBody().getId();
 
         String auditorium1Name = "1-301";
         ResponseEntity<Auditorium> response1 = createAuditorium(restTemplate, url, auditorium1Name, 25, true, buildingId);
         assertThat(response1.getStatusCode(), is(HttpStatus.CREATED));
 
         int id = response1.getBody().getId();
-        ResponseEntity<Void> response2 = restTemplate.exchange(url + "auditoriums" + "/" + id, HttpMethod.DELETE, null, Void.class);
+        ResponseEntity<Void> response2 = deleteEntity(restTemplate, url, id);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), nullValue());
 
-        ResponseEntity<Auditorium> response3 = restTemplate.getForEntity(url + "auditoriums" +"/" + id, Auditorium.class);
+        ResponseEntity<Auditorium> response3 = getEntity(restTemplate, url, id, Auditorium.class);
         assertThat(response3.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 }
