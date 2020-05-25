@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { appRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
@@ -12,6 +12,10 @@ import { LecturesViewComponent } from './components/lectures-view/lectures-view.
 import { LectureListComponent } from './components/lecture-list/lecture-list.component';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -21,6 +25,8 @@ registerLocaleData(localeRu, 'ru');
     AuditoriumListComponent,
     LecturesViewComponent,
     LectureListComponent,
+    LoginFormComponent,
+    AlertComponent,
   ],
   imports: [
     appRoutingModule,
@@ -32,7 +38,9 @@ registerLocaleData(localeRu, 'ru');
   ],
   providers: [
     AuditoriumService,
-    { provide: LOCALE_ID, useValue: 'ru' }
+    { provide: LOCALE_ID, useValue: 'ru' },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

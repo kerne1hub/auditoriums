@@ -17,8 +17,30 @@
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Профиль</a>
+        <li class="dropdown" (click)="clearErrors()"  *ngIf="!currentUser else logOut">
+          <div class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-sign-in-alt"></span>
+          </div>
+          <div class="dropdown-menu">
+            <app-login-form></app-login-form>
+          </div>
+        </li>
+
+        <ng-template #logOut>
+          <li class="nav-item">
+            <a class="nav-link">{{ currentUser.firstName }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()">
+              <span class="fa fa-sign-out-alt"></span>
+            </a>
+          </li>
+        </ng-template>
+
+        <li class="nav-item" *ngIf="!currentUser">
+          <a class="nav-link" [routerLink]="'register'">
+            <span class="fa fa-user-plus"></span>
+          </a>
         </li>
       </ul>
     </div>

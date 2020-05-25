@@ -87,13 +87,19 @@ export class LectureListComponent implements OnInit {
   }
 
   setPrevWeek() {
-    this.date = {...this.date, day: this.date.day-7};
+    this.setWeek(true);
     this.getSchedule(this.currentGroupId);
   }
 
   setNextWeek() {
-    this.date = {...this.date, day: this.date.day+7};
+    this.setWeek();
     this.getSchedule(this.currentGroupId);
+  }
+
+  private setWeek(inverse = false) {
+    const currentDate = new Date(this.date.year, this.date.month, this.date.day);
+    currentDate.setDate(inverse? this.date.day - 7 : this.date.day + 7);
+    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth(), day: currentDate.getDate() }
   }
 
   selectGroup(group: Group) {

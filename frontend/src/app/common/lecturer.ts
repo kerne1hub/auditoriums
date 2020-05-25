@@ -1,7 +1,5 @@
-export class Lecturer {
-  id: number;
-  firstName: string;
-  lastName: string;
-  patronymic: string;
+import { User } from './user';
+
+export class Lecturer extends User {
   position: string;
 }
