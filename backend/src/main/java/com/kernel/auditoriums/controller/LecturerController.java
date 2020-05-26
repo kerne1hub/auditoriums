@@ -2,7 +2,6 @@ package com.kernel.auditoriums.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.kernel.auditoriums.entity.Lecturer;
-import com.kernel.auditoriums.entity.User;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;

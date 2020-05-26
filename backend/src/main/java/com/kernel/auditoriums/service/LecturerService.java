@@ -1,6 +1,7 @@
 package com.kernel.auditoriums.service;
 
 import com.kernel.auditoriums.entity.Lecturer;
+import com.kernel.auditoriums.entity.UserType;
 import com.kernel.auditoriums.exception.ApiException;
 import com.kernel.auditoriums.repository.LecturerRepository;
 import com.kernel.auditoriums.security.JwtTokenProvider;
@@ -18,15 +19,13 @@ public class LecturerService {
 
     private final LecturerRepository repository;
     private final PasswordEncoder encoder;
-    private final JwtTokenProvider tokenProvider;
-    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Autowired
-    public LecturerService(LecturerRepository repository, PasswordEncoder encoder, JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    public LecturerService(LecturerRepository repository, PasswordEncoder encoder, JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService) {
         this.repository = repository;
         this.encoder = encoder;
-        this.tokenProvider = tokenProvider;
-        this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     public ResponseEntity<List<Lecturer>> getLecturers() {
@@ -41,9 +40,11 @@ public class LecturerService {
     }
 
     public ResponseEntity<Lecturer> createLecturer(Lecturer lecturer) {
+        lecturer.setUserType(UserType.LECTURER);
         lecturer.setPassword(encoder.encode(lecturer.getPassword()));
-        Lecturer savedLecturer = repository.save(lecturer);
-        return new ResponseEntity<>(savedLecturer, HttpStatus.CREATED);
+        repository.save(lecturer);
+
+        return new ResponseEntity<>(lecturer, HttpStatus.CREATED);
     }
 
     public ResponseEntity<Lecturer> editLecturer(String login, Lecturer lecturerFromDb, Lecturer lecturer) {

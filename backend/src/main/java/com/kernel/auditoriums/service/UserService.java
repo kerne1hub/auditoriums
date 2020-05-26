@@ -10,8 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -29,10 +33,22 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    public String login(String login, String password) {
+    public ResponseEntity<?> login(User user) {
+        User userFromDb = getByLogin(user.getLogin());
+
+        if (userFromDb == null) {
+            throw new UsernameNotFoundException("User " + user.getLogin() + " not found!");
+        }
+
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
-            return tokenProvider.createToken(login);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword()));
+            String token = tokenProvider.createToken(user.getLogin());
+
+            Map<Object, Object> response = new HashMap<>();
+            response.put("user", userFromDb);
+            response.put("token", token);
+
+            return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new ApiException("Invalid login/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }

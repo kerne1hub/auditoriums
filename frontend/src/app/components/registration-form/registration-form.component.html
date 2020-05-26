@@ -1,0 +1,86 @@
+<form [formGroup]="registrationForm" class="main mt-5" (ngSubmit)="register()">
+  <h4 class="col text-center mt-3">Auditorium<small class="align-top">agent</small></h4>
+  <hr>
+  <h4 class="ml-4 mt-3">Регистрация</h4>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="loginInput">Логин</label>
+    <input type="text" class="form-control" formControlName="login" id="loginInput" placeholder="Логин" [ngClass]="{ 'is-invalid': submitted && form.login?.errors }">
+    <div *ngIf="submitted && form.login.errors" class="invalid-feedback">
+      <div *ngIf="form.login.errors.required">Поле 'Логин' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="emailInput">Электронная почта</label>
+    <input type="email" class="form-control" formControlName="email" id="emailInput" placeholder="name@example.com" [ngClass]="{ 'is-invalid': submitted && form.email?.errors }">
+    <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+      <div *ngIf="form.email.errors.required">Поле 'Email' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="firstNameInput">Имя</label>
+    <input type="text" class="form-control" formControlName="firstName" id="firstNameInput" placeholder="Имя" [ngClass]="{ 'is-invalid': submitted && form.firstName?.errors }">
+    <div *ngIf="submitted && form.firstName.errors" class="invalid-feedback">
+      <div *ngIf="form.firstName.errors.required">Поле 'Имя' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="lastNameInput">Фамилия</label>
+    <input type="text" class="form-control" formControlName="lastName" id="lastNameInput" placeholder="Фамилия" [ngClass]="{ 'is-invalid': submitted && form.lastName?.errors }">
+    <div *ngIf="submitted && form.lastName.errors" class="invalid-feedback">
+      <div *ngIf="form.lastName.errors.required">Поле 'Фамилия' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="patronymicInput">Отчество</label>
+    <input type="text" class="form-control" formControlName="patronymic" id="patronymicInput" placeholder="Отчество">
+  </div>
+
+  <div class="form-group dropdown ml-4 mt-3 mr-4">
+    <label for="userTypeInput">Тип учетной записи</label>
+    <input type="text" #user_type class="form-control dropdown-toggle" formControlName="userType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userTypeInput" placeholder="Выберите">
+    <div class="dropdown-menu" aria-labelledby="userTypeInput">
+      <button class="dropdown-item" type="button" (click)="selectType(null)">Выберите...</button>
+      <button class="dropdown-item" type="button" *ngFor="let userType of userTypes" (click)="selectType(userType); user_type.value = userType.name;">{{ userType.name }}</button>
+    </div>
+    <div *ngIf="submitted && selectedType.length == 0" class="invalid-feedback">
+      Выберите тип учетной записи
+    </div>
+  </div>
+
+  <div class="form-group collapse ml-4 mt-3 mr-4" [ngbCollapse]="isLecturerCollapsed" id="multiCollapseExample2">
+    <label for="positionInput">Должность</label>
+    <input type="text" class="form-control" formControlName="position" id="positionInput" placeholder="Должность" [ngClass]="{ 'is-invalid': submitted && form.position?.errors }">
+    <div *ngIf="submitted && form.position.errors" class="invalid-feedback">
+      <div *ngIf="form.position.errors.required">Поле 'Должность' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="passwordInput">Пароль</label>
+    <input type="password" class="form-control" formControlName="password" id="passwordInput" placeholder="Не менее 8 символов" [ngClass]="{ 'is-invalid': submitted && form.password?.errors }">
+    <div *ngIf="submitted && form.password.errors" class="invalid-feedback">
+      <div *ngIf="form.password.errors.required">Поле 'Пароль' не заполнено</div>
+    </div>
+  </div>
+
+  <div class="form-group ml-4 mt-3 mr-4">
+    <label for="confirmPassword">Подтвердите пароль</label>
+    <input type="password" class="form-control" formControlName="confirmPassword" id="confirmPassword" placeholder="Не менее 8 символов" [ngClass]="{ 'is-invalid': submitted && form.confirmPassword?.errors }">
+    <div *ngIf="submitted && form.confirmPassword.errors" class="invalid-feedback">
+      <div *ngIf="form.confirmPassword.errors.required">Подтвердите пароль</div>
+    </div>
+  </div>
+
+  <button [disabled]="loading" class="btn btn-success btn-lg d-block mx-auto">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    Зарегистрироваться
+  </button>
+  <div class="form-group mt-2 mb-0">
+    <app-alert></app-alert>
+  </div>
+</form>

@@ -16,6 +16,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -27,6 +28,7 @@ registerLocaleData(localeRu, 'ru');
     LectureListComponent,
     LoginFormComponent,
     AlertComponent,
+    RegistrationFormComponent,
   ],
   imports: [
     appRoutingModule,

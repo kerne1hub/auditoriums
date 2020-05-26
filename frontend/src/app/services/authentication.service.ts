@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../common/user';
+import {Lecturer} from '../common/lecturer';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,10 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('aa_token');
     this.currentUserSubject.next(null);
+  }
+
+  registerLecturer(lecturer: Lecturer) {
+    return this.http.post<Lecturer>('http://localhost:8080/api/lecturers', lecturer)
+      .pipe(map(response => response))
   }
 }

@@ -13,15 +13,16 @@ import {Lecture} from '../../common/lecture';
 })
 export class AuditoriumListComponent implements OnInit {
 
-  buildings: Building[];
   auditoriums: Auditorium[];
-  date: NgbDateStruct;
+  buildingName = 'Здание';
+  buildings: Building[];
   calendarDate: Date;
+  congestion = 0;
   currentBuildingId = 1;
   days: string[] = [
     'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
   ];
-  congestion = 0;
+  date: NgbDateStruct;
   progressStyle = 'success';
 
   constructor(private auditoriumService: AuditoriumService,
