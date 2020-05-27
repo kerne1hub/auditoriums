@@ -41,11 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
             httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
             return;
-//            ApiError errorResponse = new ApiError(ex.getHttpStatus(), ex.getMessage(), ex);
-//            httpServletResponse.setStatus(ex.getHttpStatus().value());
-//            httpServletResponse.getWriter().write(convertObjectToJson(errorResponse));
-//            httpServletResponse.addHeader("content-type", "application/json");
-//            return;
+            //throw ex;
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);

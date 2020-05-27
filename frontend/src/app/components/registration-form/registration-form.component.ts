@@ -88,6 +88,7 @@ export class RegistrationFormComponent implements OnInit {
     }
 
     const lecturer = new Lecturer(
+      null,
       this.form.firstName.value,
       this.form.lastName.value,
       this.form.patronymic.value,

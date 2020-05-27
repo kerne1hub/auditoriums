@@ -30,4 +30,9 @@ export class LectureService {
         .set('name', term)})
       .pipe(map(response => response));
   }
+
+  editLecture(lectureId: number, lectureDto: any) {
+    return this.httpClient.put<Lecture>(this.baseUrl + `/${lectureId}`, lectureDto)
+      .pipe(map(response => response));
+  }
 }

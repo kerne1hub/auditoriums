@@ -29,7 +29,7 @@ export class AuthenticationService {
       .pipe(map(response => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(response.user));
-        localStorage.setItem('aa_token', JSON.stringify(response.token));
+        localStorage.setItem('aa_token', response.token);
         this.currentUserSubject.next(response.user);
         return response.user;
       }));
@@ -40,6 +40,7 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('aa_token');
     this.currentUserSubject.next(null);
+    location.reload();
   }
 
   registerLecturer(lecturer: Lecturer) {

@@ -53,7 +53,7 @@ public class LecturerService {
         }
 
         if (lecturer.getPassword() == null || !encoder.matches(lecturer.getPassword(), lecturerFromDb.getPassword())) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new ApiException("Неверный пароль", HttpStatus.FORBIDDEN);
         }
 
         lecturerFromDb.setFirstName(lecturer.getFirstName());

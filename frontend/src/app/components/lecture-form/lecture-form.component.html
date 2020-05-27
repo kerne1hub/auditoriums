@@ -1,0 +1,70 @@
+<div class="modal fade" id="lecture_form" tabindex="-1" role="dialog" aria-labelledby="lecture_form-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="lecture_dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lectureLabel">Информация о занятии</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="lectureForm" class="modal-body">
+        <div class="form-group row justify-content-center">
+          <label for="dateInput{{lecture.id}}" class="col-sm-5 col-form-label">Дата</label>
+          <div class="input-group col-sm-7">
+            <input class="form-control" id="dateInput{{lecture.id}}" formControlName="date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
+                   ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                <i class="fa fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="timeInput{{lecture.id}}" class="col-sm-5 col-form-label">Время</label>
+          <div class="col-sm-7">
+            <ngb-timepicker id="timeInput{{lecture.id}}" formControlName="time" [(ngModel)]="time"></ngb-timepicker>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="auditoriumInput{{lecture.id}}" class="col-sm-5 col-form-label">Аудитория</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="auditoriumInput{{lecture.id}}" formControlName="auditorium" [(ngModel)]="auditoriumModel"
+                   [ngbTypeahead]="searchAuditoriums" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)">
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="groupInput{{lecture.id}}" class="col-sm-5 col-form-label">Группа</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="groupInput{{lecture.id}}" formControlName="group" [(ngModel)]="groupModel"
+                   [ngbTypeahead]="searchGroups" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)">
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="lecturerInput{{lecture.id}}" class="col-sm-5 col-form-label">Преподаватель</label>
+          <div class="col-sm-7">
+            <input type="text" disabled class="form-control" id="lecturerInput{{lecture.id}}" formControlName="lecturer">
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="subjectInput{{lecture.id}}" class="col-sm-5 col-form-label">Предмет</label>
+          <div class="col-sm-7">
+            <input type="text" disabled class="form-control" id="subjectInput{{lecture.id}}" formControlName="subject">
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" (click)="save()">OK</button>
+      </div>
+      <div class="justify-content-center m-2">
+        <app-alert></app-alert>
+      </div>
+    </div>
+  </div>
+</div>

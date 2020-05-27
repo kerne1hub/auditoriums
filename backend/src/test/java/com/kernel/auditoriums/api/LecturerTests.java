@@ -125,7 +125,7 @@ public class LecturerTests extends TestBase{
         lecturer.setPassword("");
 
         ResponseEntity<Lecturer> response2 = editEntity(restTemplate, url, id, lecturer, Lecturer.class);
-        assertThat(response2.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
+        assertThat(response2.getStatusCode(), is(HttpStatus.FORBIDDEN));
     }
 
     @Test

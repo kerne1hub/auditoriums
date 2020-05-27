@@ -1,0 +1,98 @@
+<div class="modal fade" id="user_form" tabindex="-1" role="dialog" aria-labelledby="user_formLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="user_dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userFormLabel">Информация о пользователе</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="userForm" class="modal-body">
+        <div class="form-group row justify-content-center">
+          <label for="firstNameInput" class="col-sm-5 col-form-label">Имя</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" formControlName="firstName" id="firstNameInput" placeholder="Имя" [ngClass]="{ 'is-invalid': submitted && form.firstName?.errors }">
+            <div *ngIf="submitted && form.firstName.errors" class="invalid-feedback">
+              <div *ngIf="form.firstName.errors.required">Поле 'Имя' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="lastNameInput" class="col-sm-5 col-form-label">Фамилия</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" formControlName="lastName" id="lastNameInput" placeholder="Фамилия" [ngClass]="{ 'is-invalid': submitted && form.lastName?.errors }">
+            <div *ngIf="submitted && form.lastName.errors" class="invalid-feedback">
+              <div *ngIf="form.lastName.errors.required">Поле 'Фамилия' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="patronymicInput" class="col-sm-5 col-form-label">Отчество</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" formControlName="patronymic" id="patronymicInput" placeholder="Отчество">
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="loginInput" class="col-sm-5 col-form-label">Логин</label>
+          <div class="col-sm-7">
+            <input type="text" disabled class="form-control" formControlName="login" id="loginInput" placeholder="Логин" [ngClass]="{ 'is-invalid': submitted && form.login?.errors }">
+            <div *ngIf="submitted && form.login.errors" class="invalid-feedback">
+              <div *ngIf="form.login.errors.required">Поле 'Email' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="emailInput" class="col-sm-5 col-form-label">Email</label>
+          <div class="col-sm-7">
+            <input type="email" class="form-control" formControlName="email" id="emailInput" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && form.email?.errors }">
+            <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+              <div *ngIf="form.email.errors.required">Поле 'Email' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="userTypeInput" class="col-sm-5 col-form-label">Тип учетной записи</label>
+          <div class="col-sm-7">
+            <input type="text" disabled #user_type class="form-control dropdown-toggle" formControlName="userType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="userTypeInput" placeholder="Выберите">
+            <div class="dropdown-menu" aria-labelledby="userTypeInput">
+              <button class="dropdown-item" type="button" (click)="selectType(null)">Выберите...</button>
+              <button class="dropdown-item" type="button" *ngFor="let userType of userTypes" (click)="selectType(userType); user_type.value = userType.name;">{{ userType.name }}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="positionInput" class="col-sm-5 col-form-label">Должность</label>
+          <div class="col-sm-7">
+            <input type="text" disabled class="form-control" formControlName="position" id="positionInput" placeholder="Должность" [ngClass]="{ 'is-invalid': submitted && form.position?.errors }">
+            <div *ngIf="submitted && form.position.errors" class="invalid-feedback">
+              <div *ngIf="form.position.errors.required">Поле 'Должность' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="passwordInput" class="col-sm-5 col-form-label">Пароль</label>
+          <div class="col-sm-7">
+            <input type="password" class="form-control" formControlName="password" id="passwordInput" placeholder="Текущий пароль" [ngClass]="{ 'is-invalid': submitted && form.password?.errors }">
+            <div *ngIf="submitted && form.password.errors" class="invalid-feedback">
+              <div *ngIf="form.password.errors.required">Поле 'Пароль' не заполнено</div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="justify-content-center m-2">
+        <app-alert></app-alert>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" (click)="update()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>

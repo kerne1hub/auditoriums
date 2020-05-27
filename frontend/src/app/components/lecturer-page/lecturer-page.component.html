@@ -1,0 +1,67 @@
+<div class="row mt-5">
+  <div class="col-lg-3">
+    <!--меню-->
+
+  </div>
+  <!-- /.col-lg-3 -->
+
+  <div class="col-lg-9">
+    <div class="card">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Профиль</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="lectures-tab" data-toggle="tab" href="#lectures" role="tab" aria-controls="lectures" aria-selected="false">Расписание</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Привилегии</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body tab-content" id="lecturerContent">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <h5 class="card-title">Основная информация</h5>
+          <div class="row no-gutters">
+            <div class="col-md-2">
+              <img class="card-img" src="http://placehold.it/125x125" height="125px" alt="Card image cap">
+            </div>
+            <div class="col-md-8 ml-1" style="border: 1px solid lightgray">
+              <p class="card-text m-2">ФИО: {{lecturer?.firstName}} {{lecturer?.lastName}} {{lecturer?.patronymic}}</p>
+              <p class="card-text m-2">Должность: {{lecturer?.position}}</p>
+              <p class="card-text m-2">Email: {{lecturer?.email}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade show" id="lectures" role="tabpanel" aria-labelledby="lectures-tab">
+          <h5 class="card-title">Занятия</h5>
+          <table class="table table-bordered table-sm">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Дата</th>
+              <th scope="col">Аудитория</th>
+              <th scope="col">Группа</th>
+              <th scope="col">Предмет</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let lecture of lecturer?.lectures; index as i">
+              <th scope="row">{{i+1}}</th>
+              <td>{{lecture.date | date: 'E, d.MM HH:mm'}}</td>
+              <td>{{lecture.auditorium.name}}</td>
+              <td>{{lecture.group.name}}</td>
+              <td>{{lecture.subject.name}}</td>
+              <td>
+                <a class="btn btn-link p-0" (click)="clearErrors(); createLectureForm(lecture);" data-toggle="modal" data-target="#lecture_form"><span class="fa fa-edit d-block"></span></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <a class="btn btn-primary mt-2" (click)="clearErrors(); createUserForm(lecturer);" data-toggle="modal" data-target="#user_form">Редактировать</a>
+      </div>
+    </div>
+  </div>
+</div>

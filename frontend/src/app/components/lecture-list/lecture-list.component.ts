@@ -4,7 +4,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { LectureService } from '../../services/lecture.service';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
-import { Group} from '../../common/group';
+import { Group } from '../../common/group';
 
 @Component({
   selector: 'app-lecture-list',

@@ -66,6 +66,7 @@ public class LectureService {
     }
 
     private ResponseEntity<Lecture> createLectureEntity(Lecture dto, Lecture entity) {
+        entity.setDate(dto.getDate());
         entity.setAuditorium(auditoriumRepository.getOne(dto.getAuditoriumId()));
         entity.setGroup(groupRepository.getOne(dto.getGroupId()));
         entity.setLecturer(lecturerRepository.getOne(dto.getLecturerId()));

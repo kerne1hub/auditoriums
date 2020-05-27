@@ -17,6 +17,10 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
+import { LecturerPageComponent } from './components/lecturer-page/lecturer-page.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { LectureFormComponent } from './components/lecture-form/lecture-form.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -29,6 +33,10 @@ registerLocaleData(localeRu, 'ru');
     LoginFormComponent,
     AlertComponent,
     RegistrationFormComponent,
+    LecturerPageComponent,
+    ProfileComponent,
+    UserFormComponent,
+    LectureFormComponent,
   ],
   imports: [
     appRoutingModule,

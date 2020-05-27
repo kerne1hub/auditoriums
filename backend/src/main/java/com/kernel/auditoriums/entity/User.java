@@ -29,15 +29,15 @@ public class User {
     private String lastName;
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
     private String patronymic;
-    @JsonView(Views.Extended.class)
+    @JsonView({Views.Extended.class, Views.Lecturer.class})
     private String email;
-    @JsonView(Views.Extended.class)
+    @JsonView({Views.Extended.class, Views.Lecturer.class})
     private String login;
     @JsonView(Views.Credentials.class)
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    @JsonView(Views.Extended.class)
+    @JsonView({Views.Default.class, Views.Lecturer.class})
     private UserType userType;
 
     public User(String firstName, String lastName, String patronymic, String email, String login, String password) {

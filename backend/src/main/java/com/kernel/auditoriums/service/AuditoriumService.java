@@ -31,9 +31,14 @@ public class AuditoriumService {
         return calendar.getTime();
     }
 
-    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date) {
+    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date, String keyword) {
         Map<Integer, Auditorium>  auditoriumMap = new HashMap<>();
         List<Auditorium> auditoriums;
+
+        if (keyword != null) {
+            auditoriums = auditoriumRepository.findAllByNameContains(keyword);
+            return ResponseEntity.ok(auditoriums);
+        }
 
         if (buildingId == null) {
             auditoriums = auditoriumRepository.findAll();
