@@ -21,6 +21,21 @@ export class LectureService {
       .pipe(map(response => response));
   }
 
+  getLecturesByLecturer(lecturerId: number | string, date: Date): Observable<Lecture[]> {
+    return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
+        .set('lecturerId', `${lecturerId}`)
+        .set('date', date.toLocaleDateString())})
+      .pipe(map(response => response));
+  }
+
+  getUndefinedLectures(date: Date): Observable<Lecture[]> {
+    return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
+        .set('undefined', 'true')
+        .set('date', date.toLocaleDateString())})
+      .pipe(map(response => response));
+  }
+
+
   getGroups(term: string): Observable<Group[]> {
     if (term === '') {
       return of([]);

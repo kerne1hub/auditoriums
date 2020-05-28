@@ -96,7 +96,7 @@ export class AuditoriumListComponent implements OnInit {
 
     data.forEach(a => {
       a.lectures.forEach(l => {
-        if (typeof l.lecturer === 'object') {
+        if (l.lecturer && typeof l.lecturer === 'object') {
           lectureMap.set(l.lecturer.id, l.lecturer);
         } else if (typeof l.lecturer === 'number') {
           l.lecturer = lectureMap.get(l.lecturer);
@@ -118,7 +118,7 @@ export class AuditoriumListComponent implements OnInit {
       });
     });
 
-    this.setCongestion(lectureCount / (data.length*6));
+    this.setCongestion(lectureCount / (data.length*36));
   }
 
   setCongestion(congestion: number) {

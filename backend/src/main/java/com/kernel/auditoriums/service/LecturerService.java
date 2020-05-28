@@ -4,11 +4,9 @@ import com.kernel.auditoriums.entity.Lecturer;
 import com.kernel.auditoriums.entity.UserType;
 import com.kernel.auditoriums.exception.ApiException;
 import com.kernel.auditoriums.repository.LecturerRepository;
-import com.kernel.auditoriums.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +17,11 @@ public class LecturerService {
 
     private final LecturerRepository repository;
     private final PasswordEncoder encoder;
-    private final UserService userService;
 
     @Autowired
-    public LecturerService(LecturerRepository repository, PasswordEncoder encoder, JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager, UserService userService) {
+    public LecturerService(LecturerRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
         this.encoder = encoder;
-        this.userService = userService;
     }
 
     public ResponseEntity<List<Lecturer>> getLecturers() {
@@ -33,10 +29,11 @@ public class LecturerService {
     }
 
     public ResponseEntity<Lecturer> getLecturer(Lecturer lecturer) {
-        if (lecturer != null) {
-            return ResponseEntity.ok(lecturer);
+        if (lecturer == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return ResponseEntity.ok(lecturer);
     }
 
     public ResponseEntity<Lecturer> createLecturer(Lecturer lecturer) {
@@ -65,4 +62,5 @@ public class LecturerService {
     public void deleteLecturer(Lecturer lecturerFromDb) {
         repository.delete(lecturerFromDb);
     }
+
 }

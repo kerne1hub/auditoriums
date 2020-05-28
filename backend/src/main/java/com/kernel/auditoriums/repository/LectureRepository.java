@@ -11,6 +11,8 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
     List<Lecture> findAllByAuditoriumIdInAndDateBetween(Collection<Integer> auditoriumIds, Date start, Date end);
     List<Lecture> findAllByGroupIdAndDateBetweenOrderByDate(Long groupId, Date start, Date end);
-    List<Lecture> findAllByGroupId(Long groupId);
     List<Lecture> findAllByDateBetween(Date startWeekDate, Date endWeekDate);
+    List<Lecture> findAllByLecturerIdAndGroupIdAndDateBetweenOrderByDate(Long lecturerId, Long groupId, Date startWeekDate, Date endWeekDate);
+    List<Lecture> findAllByLecturerIdAndDateBetweenOrderByDate(Long lecturerId, Date startWeekDate, Date endWeekDate);
+    List<Lecture> findAllByLecturerIdIsNullAndDateBetweenOrderByDate(Date startWeekDate, Date endWeekDate);
 }

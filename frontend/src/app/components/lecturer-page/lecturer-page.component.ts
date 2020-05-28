@@ -4,6 +4,9 @@ import {Lecturer} from '../../common/lecturer';
 import {AlertService} from '../../services/alert.service';
 import {UserFormComponent} from '../user-form/user-form.component';
 import {LectureFormComponent} from '../lecture-form/lecture-form.component';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {LectureService} from '../../services/lecture.service';
+import {Lecture} from '../../common/lecture';
 
 @Component({
   selector: 'app-lecturer-page',
@@ -12,19 +15,26 @@ import {LectureFormComponent} from '../lecture-form/lecture-form.component';
 })
 export class LecturerPageComponent implements OnInit {
 
+  date: NgbDateStruct;
   @Input() userId: number;
   lecturer: Lecturer;
+  lectures: Lecture[];
+  undefinedLectures: Lecture[];
   private userFormRef: ComponentRef<UserFormComponent>;
   private lectureFormRef: ComponentRef<LectureFormComponent>;
 
   constructor(
     private alertService: AlertService,
+    private lectureService: LectureService,
     private lecturerService: LecturerService,
     private resolver: ComponentFactoryResolver,
     private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
+    this.fillDate();
     this.getLecturer();
+    this.getLectures();
+    this.getUndefinedLectures();
   }
 
   clearErrors() {
@@ -68,15 +78,56 @@ export class LecturerPageComponent implements OnInit {
       this.createComponent('user', instance);
   }
 
+  // month values in 0..11
+  private fillDate() {
+    const date = new Date();
+
+    this.date = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate()
+    }
+  }
+
   getLecturer() {
     this.lecturerService.getLecturer(this.userId).subscribe(
       data => this.lecturer = data
     );
   }
 
+  getLectures() {
+    const date = new Date(this.date.year, this.date.month - 1, this.date.day);
+    this.lectureService.getLecturesByLecturer(this.userId, date).subscribe(
+      data => this.lectures = data
+    );
+  }
+
+  getUndefinedLectures() {
+    const date = new Date(this.date.year, this.date.month - 1, this.date.day);
+    this.lectureService.getUndefinedLectures(date).subscribe(
+      data => this.undefinedLectures = data
+    );
+  }
+
   private destroyComponent(componentRef: ComponentRef<any>) {
     componentRef.destroy();
     componentRef = null;
+  }
+
+  setPrevWeek() {
+    this.setWeek(true);
+    this.getLectures();
+  }
+
+  setNextWeek() {
+    this.setWeek();
+    this.getLectures();
+  }
+
+  private setWeek(inverse = false) {
+    const currentDate = new Date(this.date.year, this.date.month, this.date.day);
+    currentDate.setDate(inverse? this.date.day - 7 : this.date.day + 7);
+    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth(), day: currentDate.getDate() }
   }
 
 }

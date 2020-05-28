@@ -36,22 +36,34 @@ public class LectureService {
         return calendar.getTime();
     }
 
-    public ResponseEntity<List<Lecture>> getLectures(Long groupId, Date date) {
-        if (groupId == null && date == null) {
-            return ResponseEntity.ok(lectureRepository.findAll());
+    //TODO: It needs to be redone
+    public ResponseEntity<List<Lecture>> getLectures(boolean isUndefined, Long groupId, Long lecturerId, Date date) {
+        Date startWeekDate;
+        Date endWeekDate;
+
+        if (date == null) {
+            startWeekDate = setDayOfWeek(new Date(), Calendar.MONDAY);
+            endWeekDate = setDayOfWeek(new Date(), Calendar.SATURDAY);
+        } else {
+            startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
+            endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
         }
-        if (groupId != null && date == null) {
-            return ResponseEntity.ok(lectureRepository.findAllByGroupId(groupId));
+
+        if (isUndefined) {
+            return ResponseEntity.ok(lectureRepository.findAllByLecturerIdIsNullAndDateBetweenOrderByDate(startWeekDate, endWeekDate));
+        }
+        if (groupId != null && lecturerId != null) {
+            return ResponseEntity.ok(lectureRepository.findAllByLecturerIdAndGroupIdAndDateBetweenOrderByDate(lecturerId, groupId, startWeekDate, endWeekDate));
+        }
+        if (groupId == null && lecturerId == null) {
+            return ResponseEntity.ok(lectureRepository.findAllByDateBetween(startWeekDate, endWeekDate));
         }
         if (groupId != null) {
-            Date startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
-            Date endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
-
             return ResponseEntity.ok(lectureRepository.findAllByGroupIdAndDateBetweenOrderByDate(groupId, startWeekDate, endWeekDate));
         }
-        Date startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
-        Date endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
-        return ResponseEntity.ok(lectureRepository.findAllByDateBetween(startWeekDate, endWeekDate));
+        {
+            return ResponseEntity.ok(lectureRepository.findAllByLecturerIdAndDateBetweenOrderByDate(lecturerId, startWeekDate, endWeekDate));
+        }
     }
 
     public ResponseEntity<Lecture> getLectureDetails(Lecture lecture) {

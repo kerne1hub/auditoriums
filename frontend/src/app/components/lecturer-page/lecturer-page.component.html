@@ -33,10 +33,40 @@
               <p class="card-text m-2">Email: {{lecturer?.email}}</p>
             </div>
           </div>
+          <a class="btn btn-outline-secondary mt-2" (click)="clearErrors(); createUserForm(lecturer);" data-toggle="modal" data-target="#user_form">Редактировать</a>
         </div>
         <div class="tab-pane fade show" id="lectures" role="tabpanel" aria-labelledby="lectures-tab">
-          <h5 class="card-title">Занятия</h5>
-          <table class="table table-bordered table-sm">
+          <div class="card-title">
+            <div class="btn-toolbar mb-3">
+              <h5>Занятия</h5>
+
+              <div class="btn-group ml-auto">
+                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary">Export</button>
+              </div>
+
+              <form class="form-inline ml-4">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" (keyup.enter)="getLectures()"
+                           ngbDatepicker #d="ngbDatepicker" (dateSelect)="getLectures()">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                        <i class="fa fa-calendar-alt"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div class="btn-group ml-2">
+                <button class="btn btn-outline-secondary" type="button" (click)="setPrevWeek()"><span class="fa fa-arrow-left"></span></button>
+                <button class="btn btn-outline-secondary" type="button" (click)="setNextWeek()"><span class="fa fa-arrow-right"></span></button>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-bordered table-sm" style="max-height: 500px">
             <thead>
             <tr>
               <th scope="col">#</th>
@@ -47,7 +77,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let lecture of lecturer?.lectures; index as i">
+            <tr *ngFor="let lecture of lectures; index as i">
               <th scope="row">{{i+1}}</th>
               <td>{{lecture.date | date: 'E, d.MM HH:mm'}}</td>
               <td>{{lecture.auditorium.name}}</td>
@@ -59,8 +89,32 @@
             </tr>
             </tbody>
           </table>
+
+          <h5 class="mt-5">Нераспределенные занятия</h5>
+          <table class="table table-bordered table-sm" style="max-height: 500px">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Дата</th>
+              <th scope="col">Аудитория</th>
+              <th scope="col">Группа</th>
+              <th scope="col">Предмет</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let lecture of undefinedLectures; index as i">
+              <th scope="row">{{i+1}}</th>
+              <td>{{lecture.date | date: 'E, d.MM HH:mm'}}</td>
+              <td>{{lecture.auditorium.name}}</td>
+              <td>{{lecture.group.name}}</td>
+              <td>{{lecture.subject.name}}</td>
+              <td>
+                <a class="btn btn-link p-0" (click)="clearErrors()"><span class="fa fa-plus d-block"></span></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-        <a class="btn btn-primary mt-2" (click)="clearErrors(); createUserForm(lecturer);" data-toggle="modal" data-target="#user_form">Редактировать</a>
       </div>
     </div>
   </div>

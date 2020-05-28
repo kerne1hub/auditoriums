@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,6 +21,12 @@ import java.util.Set;
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecturer.class)
 public class Lecturer extends User {
+
+    public Lecturer(String firstName, String lastName, String patronymic, String email, String login, String password, String position) {
+        super(firstName, lastName, patronymic, email, login, password);
+        setUserType(UserType.LECTURER);
+        this.position = position;
+    }
 
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
     private String position;
@@ -38,12 +45,6 @@ public class Lecturer extends User {
     private Set<Group> groups;
 
     @OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY)
-    @JsonView(Views.Lecturer.class)
+    @JsonView(Views.Extended.class)
     private Set<Lecture> lectures;
-
-    public Lecturer(String firstName, String lastName, String patronymic, String email, String login, String password, String position) {
-        super(firstName, lastName, patronymic, email, login, password);
-        setUserType(UserType.LECTURER);
-        this.position = position;
-    }
 }

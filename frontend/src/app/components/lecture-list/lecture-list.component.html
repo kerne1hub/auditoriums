@@ -51,7 +51,7 @@
               <h6 class="card-subtitle mb-2 text-muted">{{ lecture.date | date: 'H:mm' }}</h6>
               <div class="card-text mb-0"><span class="fa fa-map-marker-alt fa-fw"></span> {{ lecture.auditorium.name }}</div>
               <div class="card-text"><span class="fa fa-graduation-cap fa-fw"></span> Группа {{ lecture.group.name }}</div>
-              <div class="card-text"><span class="fa fa-user-alt fa-fw"></span> {{ lecture.lecturer.position }} {{ lecture.lecturer.lastName }} {{ lecture.lecturer.firstName }} {{ lecture.lecturer.patronymic }}</div>
+              <div class="card-text"><span class="fa fa-user-alt fa-fw"></span> {{ lecture.lecturer?.position }} {{ lecture.lecturer?.lastName }} {{ lecture.lecturer?.firstName }} {{ lecture.lecturer?.patronymic }}</div>
             </div>
           </div>
         </div>
