@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Lecture} from '../common/lecture';
 import {Group} from '../common/group';
+import {Subject} from '../common/subject';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,26 @@ export class LectureService {
   private baseUrl = 'http://localhost:8080/api/lectures';
 
   constructor(private httpClient: HttpClient) { }
+
+  getActiveTab() {
+    if (!localStorage.getItem('activeTab')) {
+      localStorage.setItem('activeTab', 'profile');
+    }
+    return localStorage.getItem('activeTab');
+  }
+
+  setActiveTab(tab: string) {
+    localStorage.setItem('activeTab', tab);
+  }
+
+  clearActiveTab() {
+    localStorage.removeItem('activeTab');
+  }
+
+  addLecture(lectureDto: any) {
+    return this.httpClient.post<Lecture>(this.baseUrl, lectureDto)
+      .pipe(map(response => response));
+  }
 
   getLectures(groupId: number | string, date: Date): Observable<Lecture[]> {
     return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
@@ -28,13 +49,22 @@ export class LectureService {
       .pipe(map(response => response));
   }
 
+  getSubjects(term: string): Observable<Subject[]> {
+    if (term === '') {
+      return of([]);
+    }
+
+    return this.httpClient.get<Group[]>('http://localhost:8080/api/subjects', { params: new HttpParams()
+        .set('name', term)})
+      .pipe(map(response => response));
+  }
+
   getUndefinedLectures(date: Date): Observable<Lecture[]> {
     return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
         .set('undefined', 'true')
         .set('date', date.toLocaleDateString())})
       .pipe(map(response => response));
   }
-
 
   getGroups(term: string): Observable<Group[]> {
     if (term === '') {

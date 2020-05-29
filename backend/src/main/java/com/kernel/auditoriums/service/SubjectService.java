@@ -1,5 +1,6 @@
 package com.kernel.auditoriums.service;
 
+import com.kernel.auditoriums.entity.Group;
 import com.kernel.auditoriums.entity.Subject;
 import com.kernel.auditoriums.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,11 @@ public class SubjectService {
         this.repository = repository;
     }
 
-    public ResponseEntity<List<Subject>> getSubjects() {
+    public ResponseEntity<List<Subject>> getSubjects(String keyword) {
+        if (keyword != null) {
+            List<Subject> subjects = repository.findAllByNameContains(keyword);
+            return ResponseEntity.ok(subjects);
+        }
         return ResponseEntity.ok(repository.findAll());
     }
 

@@ -124,7 +124,6 @@ export class LectureListComponent implements OnInit {
         l.auditorium = auditoriumMap.get(l.auditorium);
       }
 
-      console.log(typeof l.lecturer);
       if (l.lecturer && typeof l.lecturer === 'object') {
         lecturerMap.set(l.lecturer.id, l.lecturer);
       } else if (typeof l.lecturer === 'number') {

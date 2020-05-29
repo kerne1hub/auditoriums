@@ -21,8 +21,8 @@ public class GroupService {
 
     public ResponseEntity<List<Group>> getGroups(String keyword) {
         if (keyword != null) {
-            List<Group> allByNameContains = repository.findAllByNameContains(keyword);
-            return ResponseEntity.ok(allByNameContains);
+            List<Group> groups = repository.findAllByNameContains(keyword);
+            return ResponseEntity.ok(groups);
         }
         return ResponseEntity.ok(repository.findAll());
     }

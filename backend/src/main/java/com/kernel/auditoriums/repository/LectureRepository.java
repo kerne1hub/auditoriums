@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
 
-    List<Lecture> findAllByAuditoriumIdInAndDateBetween(Collection<Integer> auditoriumIds, Date start, Date end);
+    List<Lecture> findAllByAuditoriumIdInAndDateBetweenOrderByDate(Collection<Integer> auditoriumIds, Date start, Date end);
     List<Lecture> findAllByGroupIdAndDateBetweenOrderByDate(Long groupId, Date start, Date end);
     List<Lecture> findAllByDateBetween(Date startWeekDate, Date endWeekDate);
     List<Lecture> findAllByLecturerIdAndGroupIdAndDateBetweenOrderByDate(Long lecturerId, Long groupId, Date startWeekDate, Date endWeekDate);

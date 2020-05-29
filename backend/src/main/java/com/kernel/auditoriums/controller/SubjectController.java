@@ -21,8 +21,8 @@ public class SubjectController {
 
     @GetMapping
     @JsonView(Views.Default.class)
-    public ResponseEntity<List<Subject>> getSubjects() {
-        return subjectService.getSubjects();
+    public ResponseEntity<List<Subject>> getSubjects(@RequestParam(value = "name", required = false) String keyword) {
+        return subjectService.getSubjects(keyword);
     }
 
     @GetMapping("/{id}")

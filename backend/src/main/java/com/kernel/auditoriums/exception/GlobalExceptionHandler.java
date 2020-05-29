@@ -31,8 +31,8 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
     }
 
     @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletResponse res, Exception ex) throws IOException {
-        res.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    public ResponseEntity<ApiError> handleException(Exception ex) throws IOException {
+        return new ResponseEntity<>(new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

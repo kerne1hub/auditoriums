@@ -10,10 +10,10 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
-            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Профиль</a>
+            <a class="nav-link {{isActiveTab('profile')}}" id="profile-tab" (click)="setActiveTab('profile')" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Профиль</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="lectures-tab" data-toggle="tab" href="#lectures" role="tab" aria-controls="lectures" aria-selected="false">Расписание</a>
+            <a class="nav-link {{isActiveTab('lectures')}}" id="lectures-tab" (click)="setActiveTab('lectures')" data-toggle="tab" href="#lectures" role="tab" aria-controls="lectures" aria-selected="false">Расписание</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Привилегии</a>
@@ -21,7 +21,7 @@
         </ul>
       </div>
       <div class="card-body tab-content" id="lecturerContent">
-        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="tab-pane fade show {{isActiveTab('profile')}}" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <h5 class="card-title">Основная информация</h5>
           <div class="row no-gutters">
             <div class="col-md-2">
@@ -35,7 +35,7 @@
           </div>
           <a class="btn btn-outline-secondary mt-2" (click)="clearErrors(); createUserForm(lecturer);" data-toggle="modal" data-target="#user_form">Редактировать</a>
         </div>
-        <div class="tab-pane fade show" id="lectures" role="tabpanel" aria-labelledby="lectures-tab">
+        <div class="tab-pane fade show {{isActiveTab('lectures')}}" id="lectures" role="tabpanel" aria-labelledby="lectures-tab">
           <div class="card-title">
             <div class="btn-toolbar mb-3">
               <h5>Занятия</h5>
@@ -89,6 +89,7 @@
             </tr>
             </tbody>
           </table>
+          <a class="btn btn-outline-secondary mt-2" (click)="clearErrors(); createLectureForm();" data-toggle="modal" data-target="#lecture_form">Добавить</a>
 
           <h5 class="mt-5">Нераспределенные занятия</h5>
           <table class="table table-bordered table-sm" style="max-height: 500px">
@@ -109,7 +110,10 @@
               <td>{{lecture.group.name}}</td>
               <td>{{lecture.subject.name}}</td>
               <td>
-                <a class="btn btn-link p-0" (click)="clearErrors()"><span class="fa fa-plus d-block"></span></a>
+                <a class="btn btn-link p-0" (click)="clearErrors(); acceptLecture(lecture)">
+                  <span *ngIf="loading; else add" class="spinner-border spinner-border-sm mr-1"></span>
+                  <ng-template #add><span  class="fa fa-plus d-block"></span></ng-template>
+                </a>
               </td>
             </tr>
             </tbody>

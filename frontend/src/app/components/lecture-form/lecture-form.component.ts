@@ -1,6 +1,6 @@
 import {Component, Injectable, OnInit} from '@angular/core';
 import {Lecture} from '../../common/lecture';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../../services/alert.service';
 import {LectureService} from '../../services/lecture.service';
 import {Lecturer} from '../../common/lecturer';
@@ -21,7 +21,6 @@ const pad = (i: number): string => i < 10 ? `0${i}` : `${i}`;
 export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 
   fromModel(value: string| null): NgbTimeStruct | null {
-    console.log(value);
     if (!value) {
       return null;
     }
@@ -51,9 +50,11 @@ export class LectureFormComponent implements OnInit {
   lecturer: Lecturer;
   lectureForm: FormGroup;
   loading = false;
-  time: string;
+  option: string;
+  submitted = false;
   searching = false;
   searchFailed = false;
+  time: string;
 
   auditoriumModel: Auditorium;
   groupModel: Group;
@@ -70,13 +71,26 @@ export class LectureFormComponent implements OnInit {
     this.initLectureForm();
     this.time = new Date(this.lecture.date).toLocaleTimeString();
     this.fillDate();
-    this.auditoriumModel = (this.lecture as Lecture).auditorium as Auditorium;
-    this.groupModel = (this.lecture as Lecture).group as Group;
-    this.subjectModel = (this.lecture as Lecture).subject as Subject;
+    this.auditoriumModel = this.lecture.auditorium;
+    this.groupModel = this.lecture.group;
+    this.subjectModel = this.lecture.subject;
   }
 
   clearErrors() {
     this.alertService.clear();
+  }
+
+  createLecture(lectureDto) {
+    this.lectureService.addLecture(lectureDto).subscribe(
+      () => {
+        this.loading = false;
+        location.reload();
+      },
+      error => {
+        console.log(error);
+        this.alertService.error(error);
+        this.loading = false;
+      });
   }
 
   private fillDate() {
@@ -93,7 +107,7 @@ export class LectureFormComponent implements OnInit {
   fillModel(): any {
     const fullDate = new Date(this.date.year, this.date.month - 1, this.date.day, +this.time.substr(0, 2), +this.time.substr(3, 2));
     fullDate.setHours(fullDate.getHours() + 6);
-    console.log(fullDate.toString());
+
     return {
       date: fullDate,
       auditoriumId: this.auditoriumModel.id,
@@ -103,24 +117,54 @@ export class LectureFormComponent implements OnInit {
     }
   }
 
+  get form() { return this.lectureForm.controls; }
+
   initLectureForm() {
     const fullName = this.lecturer.lastName + ' ' + this.lecturer.firstName + ' ' + this.lecturer.patronymic;
 
     this.lectureForm = this.fb.group({
-      date: this.lecture.date,
-      time: this.time,
-      auditorium: (this.lecture.auditorium as Auditorium).name,
-      group: (this.lecture.group as Group).name,
-      lecturer: fullName,
-      subject: (this.lecture.subject as Subject).name
+      date: new FormControl(this.lecture.date, Validators.required),
+      time: new FormControl(this.time, Validators.required),
+      auditorium: new FormControl(this.lecture.auditorium?.name, Validators.required),
+      group: new FormControl(this.lecture.group?.name, Validators.required),
+      lecturer: new FormControl({value:fullName, disabled:true}, Validators.required),
+      subject: new FormControl({value:this.lecture.subject?.name, disabled: this.option !== 'create'}, Validators.required)
     });
   }
 
+  refuse() {
+    const lecturerId = this.lecturer.id;
+    this.lecturer.id = null;
+
+    this.save();
+
+    this.lecturer.id = lecturerId;
+  }
+
   save() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.lectureForm.invalid) {
+      return;
+    }
+
     this.loading = true;
     const lectureDto = this.fillModel();
 
-    this.updateLecture(lectureDto);
+    switch(this.option) {
+      case 'create': {
+        this.createLecture(lectureDto);
+        break;
+      }
+      case 'update': {
+        this.updateLecture(lectureDto);
+        break;
+      }
+    }
   }
 
   searchAuditoriums = (text$: Observable<string>) =>
@@ -146,6 +190,22 @@ export class LectureFormComponent implements OnInit {
       tap(() => this.searching = true),
       switchMap(term =>
         this.lectureService.getGroups(term).pipe(
+          tap(() => this.searchFailed = false),
+          catchError(() => {
+            this.searchFailed = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.searching = false)
+    )
+
+  searchSubjects = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(() => this.searching = true),
+      switchMap(term =>
+        this.lectureService.getSubjects(term).pipe(
           tap(() => this.searchFailed = false),
           catchError(() => {
             this.searchFailed = true;

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Data
@@ -34,7 +34,7 @@ public class Auditorium {
     private Building building;
     @JsonView(Views.Auditorium.class)
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
-    private Set<Lecture> lectures = new HashSet<>();
+    private Set<Lecture> lectures = new TreeSet<>();
 
     @Column(name = "building_id", insertable = false, updatable = false)
     private Integer buildingId;

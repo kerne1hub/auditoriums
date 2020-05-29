@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecture.class)
-public class Lecture {
+public class Lecture implements Comparable<Lecture> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,5 +68,10 @@ public class Lecture {
         this.subjectId = subjectId;
         this.groupId = groupId;
         this.auditoriumId = auditoriumId;
+    }
+
+    @Override
+    public int compareTo(Lecture l) {
+        return date.compareTo(l.date);
     }
 }

@@ -1,4 +1,13 @@
-import {Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewContainerRef} from '@angular/core';
+import {
+  Component,
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
 import {LecturerService} from '../../services/lecturer.service';
 import {Lecturer} from '../../common/lecturer';
 import {AlertService} from '../../services/alert.service';
@@ -7,18 +16,22 @@ import {LectureFormComponent} from '../lecture-form/lecture-form.component';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {LectureService} from '../../services/lecture.service';
 import {Lecture} from '../../common/lecture';
+import {Auditorium} from '../../common/auditorium';
+import {Group} from '../../common/group';
+import {Subject} from '../../common/subject';
 
 @Component({
   selector: 'app-lecturer-page',
   templateUrl: './lecturer-page.component.html',
   styleUrls: ['./lecturer-page.component.css']
 })
-export class LecturerPageComponent implements OnInit {
+export class LecturerPageComponent implements OnInit, OnDestroy {
 
   date: NgbDateStruct;
   @Input() userId: number;
   lecturer: Lecturer;
   lectures: Lecture[];
+  loading = false;
   undefinedLectures: Lecture[];
   private userFormRef: ComponentRef<UserFormComponent>;
   private lectureFormRef: ComponentRef<LectureFormComponent>;
@@ -28,13 +41,35 @@ export class LecturerPageComponent implements OnInit {
     private lectureService: LectureService,
     private lecturerService: LecturerService,
     private resolver: ComponentFactoryResolver,
-    private viewContainerRef: ViewContainerRef) { }
+    private viewContainerRef: ViewContainerRef) {
+  }
+
+  ngOnDestroy(): void {
+    this.lectureService.clearActiveTab();
+  }
 
   ngOnInit(): void {
     this.fillDate();
     this.getLecturer();
     this.getLectures();
     this.getUndefinedLectures();
+  }
+
+  acceptLecture(lecture: Lecture) {
+    this.loading = true;
+    const lectureDto = this.fillModel(lecture);
+
+    this.lectureService.editLecture(lecture.id, lectureDto).subscribe(
+      () => {
+        this.loading = false;
+        this.getLectures();
+        this.getUndefinedLectures();
+      },
+      error => {
+        console.log(error);
+        this.alertService.error(error);
+        this.loading = false;
+      });
   }
 
   clearErrors() {
@@ -57,12 +92,13 @@ export class LecturerPageComponent implements OnInit {
       this.lectureFormRef = this.viewContainerRef.createComponent(componentFactory);
       const componentInstance = this.lectureFormRef.instance;
 
-      componentInstance.lecture = instance;
+      componentInstance.lecture = instance?? new Lecture();
       componentInstance.lecturer = this.lecturer;
+      componentInstance.option = instance? 'update': 'create';
     }
   }
 
-  createLectureForm(instance) {
+  createLectureForm(instance = null) {
     if (this.lectureFormRef) {
       this.destroyComponent(this.lectureFormRef)
       // this.updateComponent(instance, 'lecture', this.lectureFormRef);
@@ -87,6 +123,32 @@ export class LecturerPageComponent implements OnInit {
       month: date.getMonth() + 1,
       day: date.getDate()
     }
+  }
+
+  // "yyyy-MM-dd'T'HH:mm:ss"
+  fillModel(lecture: Lecture): any {
+    return {
+      date: lecture.date,
+      auditoriumId: (lecture.auditorium as Auditorium).id,
+      groupId: (lecture.group as Group).id,
+      lecturerId: this.lecturer.id,
+      subjectId: (lecture.subject as Subject).id
+    }
+  }
+
+  getActiveTab() {
+    return this.lectureService.getActiveTab();
+  }
+
+  setActiveTab(tab: string) {
+    this.lectureService.setActiveTab(tab);
+  }
+
+  isActiveTab(tab: string) {
+    if (this.getActiveTab() === tab) {
+      return 'active';
+    }
+    return '';
   }
 
   getLecturer() {
@@ -117,11 +179,13 @@ export class LecturerPageComponent implements OnInit {
   setPrevWeek() {
     this.setWeek(true);
     this.getLectures();
+    this.getUndefinedLectures();
   }
 
   setNextWeek() {
     this.setWeek();
     this.getLectures();
+    this.getUndefinedLectures();
   }
 
   private setWeek(inverse = false) {

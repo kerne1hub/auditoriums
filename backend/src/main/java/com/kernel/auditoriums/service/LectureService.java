@@ -81,7 +81,7 @@ public class LectureService {
         entity.setDate(dto.getDate());
         entity.setAuditorium(auditoriumRepository.getOne(dto.getAuditoriumId()));
         entity.setGroup(groupRepository.getOne(dto.getGroupId()));
-        entity.setLecturer(lecturerRepository.getOne(dto.getLecturerId()));
+        entity.setLecturer(dto.getLecturerId() != null? lecturerRepository.getOne(dto.getLecturerId()): null);
         entity.setSubject(subjectRepository.getOne(dto.getSubjectId()));
 
         return new ResponseEntity<>(lectureRepository.save(entity), HttpStatus.CREATED);

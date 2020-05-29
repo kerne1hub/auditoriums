@@ -6,8 +6,11 @@ import {Auditorium} from './auditorium';
 export class Lecture {
   id: number;
   date: Date;
-  auditorium: Auditorium | number;
-  group: Group | number;
-  lecturer: Lecturer | number;
-  subject: Subject | number;
+  auditorium: Auditorium;
+  group: Group;
+  lecturer: Lecturer;
+  subject: Subject;
+
+  constructor() {
+  }
 }

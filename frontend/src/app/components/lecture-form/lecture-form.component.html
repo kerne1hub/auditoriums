@@ -12,11 +12,14 @@
           <label for="dateInput{{lecture.id}}" class="col-sm-5 col-form-label">Дата</label>
           <div class="input-group col-sm-7">
             <input class="form-control" id="dateInput{{lecture.id}}" formControlName="date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
-                   ngbDatepicker #d="ngbDatepicker">
+                   ngbDatepicker #d="ngbDatepicker" [ngClass]="{ 'is-invalid': submitted && form.date?.errors }">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
                 <i class="fa fa-calendar-alt"></i>
               </button>
+            </div>
+            <div *ngIf="submitted && form.date.errors" class="invalid-feedback">
+              <div *ngIf="form.date.errors.required">Поле 'Дата' не заполнено</div>
             </div>
           </div>
         </div>
@@ -24,7 +27,12 @@
         <div class="form-group row justify-content-center">
           <label for="timeInput{{lecture.id}}" class="col-sm-5 col-form-label">Время</label>
           <div class="col-sm-7">
-            <ngb-timepicker id="timeInput{{lecture.id}}" formControlName="time" [(ngModel)]="time"></ngb-timepicker>
+            <ngb-timepicker id="timeInput{{lecture.id}}" formControlName="time" [(ngModel)]="time"
+                            [ngClass]="{ 'is-invalid': submitted && form.time?.errors }">
+            </ngb-timepicker>
+            <div *ngIf="submitted && form.time.errors" class="invalid-feedback">
+              <div *ngIf="form.time.errors.required">Поле 'Время' не заполнено</div>
+            </div>
           </div>
         </div>
 
@@ -32,7 +40,11 @@
           <label for="auditoriumInput{{lecture.id}}" class="col-sm-5 col-form-label">Аудитория</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" id="auditoriumInput{{lecture.id}}" formControlName="auditorium" [(ngModel)]="auditoriumModel"
-                   [ngbTypeahead]="searchAuditoriums" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)">
+                   [ngbTypeahead]="searchAuditoriums" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)"
+                   [ngClass]="{ 'is-invalid': submitted && form.auditorium?.errors }">
+            <div *ngIf="submitted && form.auditorium.errors" class="invalid-feedback">
+              <div *ngIf="form.auditorium.errors.required">Поле 'Аудитория' не заполнено</div>
+            </div>
           </div>
         </div>
 
@@ -40,26 +52,36 @@
           <label for="groupInput{{lecture.id}}" class="col-sm-5 col-form-label">Группа</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" id="groupInput{{lecture.id}}" formControlName="group" [(ngModel)]="groupModel"
-                   [ngbTypeahead]="searchGroups" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)">
+                   [ngbTypeahead]="searchGroups" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)"
+                   [ngClass]="{ 'is-invalid': submitted && form.group?.errors }">
+            <div *ngIf="submitted && form.group.errors" class="invalid-feedback">
+              <div *ngIf="form.group.errors.required">Поле 'Группа' не заполнено</div>
+            </div>
           </div>
         </div>
 
         <div class="form-group row justify-content-center">
           <label for="lecturerInput{{lecture.id}}" class="col-sm-5 col-form-label">Преподаватель</label>
           <div class="col-sm-7">
-            <input type="text" disabled class="form-control" id="lecturerInput{{lecture.id}}" formControlName="lecturer">
+            <input type="text" class="form-control" id="lecturerInput{{lecture.id}}" formControlName="lecturer">
           </div>
         </div>
 
         <div class="form-group row justify-content-center">
           <label for="subjectInput{{lecture.id}}" class="col-sm-5 col-form-label">Предмет</label>
           <div class="col-sm-7">
-            <input type="text" disabled class="form-control" id="subjectInput{{lecture.id}}" formControlName="subject">
+            <input type="text" class="form-control" id="subjectInput{{lecture.id}}" formControlName="subject" [(ngModel)]="subjectModel"
+                   [ngbTypeahead]="searchSubjects" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)"
+                   [ngClass]="{ 'is-invalid': submitted && form.subject?.errors }">
+            <div *ngIf="submitted && form.subject.errors" class="invalid-feedback">
+              <div *ngIf="form.subject.errors.required">Поле 'Предмет' не заполнено</div>
+            </div>
           </div>
         </div>
       </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-danger" (click)="refuse()" *ngIf="option !== 'create'">Отказаться от занятия</button>
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Отмена</button>
         <button type="button" class="btn btn-success" (click)="save()">OK</button>
       </div>
       <div class="justify-content-center m-2">
