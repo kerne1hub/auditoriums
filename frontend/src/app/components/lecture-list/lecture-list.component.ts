@@ -51,7 +51,7 @@ export class LectureListComponent implements OnInit {
     this.currentGroupId = groupId;
     this.calendarDate = this.date == null ? new Date() : new Date(this.date.year, this.date.month - 1, this.date.day);
 
-    this.lectureService.getLectures(groupId, this.calendarDate).subscribe(
+    this.lectureService.getLecturesByGroup(groupId, this.calendarDate).subscribe(
       data => {
         this.deserializeContent(data);
         this.getLecturesByDay(data);

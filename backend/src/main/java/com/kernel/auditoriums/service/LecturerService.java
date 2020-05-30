@@ -24,7 +24,10 @@ public class LecturerService {
         this.encoder = encoder;
     }
 
-    public ResponseEntity<List<Lecturer>> getLecturers() {
+    public ResponseEntity<List<Lecturer>> getLecturers(String keyword) {
+        if (keyword != null) {
+            return ResponseEntity.ok(repository.findAllByLastNameContains(keyword));
+        }
         return ResponseEntity.ok(repository.findAll());
     }
 
@@ -39,9 +42,9 @@ public class LecturerService {
     public ResponseEntity<Lecturer> createLecturer(Lecturer lecturer) {
         lecturer.setUserType(UserType.LECTURER);
         lecturer.setPassword(encoder.encode(lecturer.getPassword()));
-        repository.save(lecturer);
+        Lecturer savedUser = repository.save(lecturer);
 
-        return new ResponseEntity<>(lecturer, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     public ResponseEntity<Lecturer> editLecturer(String login, Lecturer lecturerFromDb, Lecturer lecturer) {
@@ -55,6 +58,7 @@ public class LecturerService {
 
         lecturerFromDb.setFirstName(lecturer.getFirstName());
         lecturerFromDb.setLastName(lecturer.getLastName());
+        lecturerFromDb.setPatronymic(lecturer.getPatronymic());
         lecturerFromDb.setPosition(lecturer.getPosition());
         return ResponseEntity.ok(repository.save(lecturerFromDb));
     }

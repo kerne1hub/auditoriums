@@ -40,7 +40,7 @@
           <div class="col-sm-7">
             <input type="text" disabled class="form-control" formControlName="login" id="loginInput" placeholder="Логин" [ngClass]="{ 'is-invalid': submitted && form.login?.errors }">
             <div *ngIf="submitted && form.login.errors" class="invalid-feedback">
-              <div *ngIf="form.login.errors.required">Поле 'Email' не заполнено</div>
+              <div *ngIf="form.login.errors.required">Поле 'Логин' не заполнено</div>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
           </div>
         </div>
 
-        <div class="form-group row justify-content-center">
+        <div class="form-group row justify-content-center" *ngIf="user.userType === 'LECTURER'">
           <label for="positionInput" class="col-sm-5 col-form-label">Должность</label>
           <div class="col-sm-7">
             <input type="text" disabled class="form-control" formControlName="position" id="positionInput" placeholder="Должность" [ngClass]="{ 'is-invalid': submitted && form.position?.errors }">

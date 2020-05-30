@@ -11,6 +11,7 @@ import {NgbDateStruct, NgbTimeAdapter, NgbTimeStruct} from '@ng-bootstrap/ng-boo
 import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
 import {AuditoriumService} from '../../services/auditorium.service';
+import {LecturerService} from '../../services/lecturer.service';
 
 const pad = (i: number): string => i < 10 ? `0${i}` : `${i}`;
 
@@ -47,7 +48,6 @@ export class LectureFormComponent implements OnInit {
 
   date: NgbDateStruct;
   lecture: Lecture;
-  lecturer: Lecturer;
   lectureForm: FormGroup;
   loading = false;
   option: string;
@@ -57,21 +57,26 @@ export class LectureFormComponent implements OnInit {
   time: string;
 
   auditoriumModel: Auditorium;
+  lecturerModel: Lecturer;
   groupModel: Group;
   subjectModel: Subject;
 
   formatter = (model: { name: string }) => model.name;
+  lecturerFormatter = (model: { lastName: string, firstName: string, patronymic: string }) =>
+    model.lastName + ' ' + String(model.firstName).charAt(0) + '. ' + String(model.lastName).charAt(0) + '.';
 
   constructor(private fb: FormBuilder,
               private alertService: AlertService,
               private auditoriumService: AuditoriumService,
-              private lectureService: LectureService) { }
+              private lectureService: LectureService,
+              private lecturerService: LecturerService) { }
 
   ngOnInit(): void {
     this.initLectureForm();
     this.time = new Date(this.lecture.date).toLocaleTimeString();
     this.fillDate();
     this.auditoriumModel = this.lecture.auditorium;
+    // this.lecturerModel = this.lecture.lecturer;
     this.groupModel = this.lecture.group;
     this.subjectModel = this.lecture.subject;
   }
@@ -112,7 +117,7 @@ export class LectureFormComponent implements OnInit {
       date: fullDate,
       auditoriumId: this.auditoriumModel.id,
       groupId: this.groupModel.id,
-      lecturerId: this.lecturer.id,
+      lecturerId: this.lecturerModel.id,
       subjectId: this.subjectModel.id
     }
   }
@@ -120,25 +125,26 @@ export class LectureFormComponent implements OnInit {
   get form() { return this.lectureForm.controls; }
 
   initLectureForm() {
-    const fullName = this.lecturer.lastName + ' ' + this.lecturer.firstName + ' ' + this.lecturer.patronymic;
+    const fullName = this.lecturerModel.lastName + ' ' + this.lecturerModel.firstName + ' ' + this.lecturerModel.patronymic;
+    console.log(fullName);
 
     this.lectureForm = this.fb.group({
       date: new FormControl(this.lecture.date, Validators.required),
       time: new FormControl(this.time, Validators.required),
       auditorium: new FormControl(this.lecture.auditorium?.name, Validators.required),
       group: new FormControl(this.lecture.group?.name, Validators.required),
-      lecturer: new FormControl({value:fullName, disabled:true}, Validators.required),
+      lecturer: new FormControl({value:fullName, disabled:this.lecturerModel?.userType === 'LECTURER'}, Validators.required),
       subject: new FormControl({value:this.lecture.subject?.name, disabled: this.option !== 'create'}, Validators.required)
     });
   }
 
   refuse() {
-    const lecturerId = this.lecturer.id;
-    this.lecturer.id = null;
+    const lecturerId = this.lecturerModel.id;
+    this.lecturerModel.id = null;
 
     this.save();
 
-    this.lecturer.id = lecturerId;
+    this.lecturerModel.id = lecturerId;
   }
 
   save() {
@@ -190,6 +196,22 @@ export class LectureFormComponent implements OnInit {
       tap(() => this.searching = true),
       switchMap(term =>
         this.lectureService.getGroups(term).pipe(
+          tap(() => this.searchFailed = false),
+          catchError(() => {
+            this.searchFailed = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.searching = false)
+    )
+
+  searchLecturers = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(() => this.searching = true),
+      switchMap(term =>
+        this.lecturerService.getLecturers(term).pipe(
           tap(() => this.searchFailed = false),
           catchError(() => {
             this.searchFailed = true;

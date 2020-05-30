@@ -44,7 +44,7 @@ export class AuditoriumListComponent implements OnInit {
     this.currentBuildingId = buildingId;
     this.calendarDate = this.date == null ? new Date() : new Date(this.date.year, this.date.month - 1, this.date.day);
 
-    this.auditoriumService.getAuditoriums(buildingId, this.calendarDate).subscribe(
+    this.auditoriumService.getAuditoriumsWithLectures(buildingId, this.calendarDate).subscribe(
       data => {
         this.auditoriums = data;
         this.deserializeContent(data);

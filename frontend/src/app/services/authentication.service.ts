@@ -22,6 +22,12 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  editProfile(user: User) {
+    return this.http.put<User>(`http://localhost:8080/api/auth/users/${user.id}`, user).pipe(
+      map(response => response)
+    );
+  }
+
   login(loginOrEmail: string, password: string) {
     const credentials = loginOrEmail.includes('@')? { email:loginOrEmail, password } : { login:loginOrEmail, password };
 

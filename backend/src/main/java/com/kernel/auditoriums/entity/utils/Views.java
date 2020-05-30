@@ -6,6 +6,7 @@ public final class Views {
     public interface Credentials extends Default {}
     public interface Auditorium {}
     public interface Lecturer {}
+    public interface User {}
     public interface Group {}
     public interface Subject {}
     public interface Lecture {}

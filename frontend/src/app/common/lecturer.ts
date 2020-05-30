@@ -5,9 +5,14 @@ export class Lecturer extends User {
   position: string;
   lectures: Lecture[];
 
-  constructor(id: number = null, firstName: string, lastName: string, patronymic: string, login: string,
-              password: string, email: string, position: string) {
-    super(id, firstName, lastName, patronymic, login, password, 'LECTURER', email);
+  constructor() {
+    super();
+  }
+
+  buildLecturer(id: number = null, firstName: string, lastName: string, patronymic: string, login: string,
+        password: string, email: string, position: string) {
+    this.buildUser(id, firstName, lastName, patronymic, login, password, 'LECTURER', email);
     this.position = position;
+    return this;
   }
 }

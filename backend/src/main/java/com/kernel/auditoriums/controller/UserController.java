@@ -6,11 +6,12 @@ import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
 
     private final UserService userService;
@@ -20,9 +21,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("auth/login")
-    @JsonView(Views.Default.class)
+    @PostMapping("/login")
+    @JsonView(Views.User.class)
     public ResponseEntity<?> login(@RequestBody User user) {
         return userService.login(user);
+    }
+
+    @PostMapping("/register")
+    @JsonView(Views.User.class)
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return userService.register(user);
+    }
+
+    @PutMapping("/users/{id}")
+    @JsonView(Views.User.class)
+    public ResponseEntity<User> editUserDetails(@AuthenticationPrincipal Authentication authentication, @PathVariable("id") User userFromDb,
+                                                @RequestBody User user) {
+        return userService.editUser(authentication.getName(), userFromDb, user);
     }
 }

@@ -25,8 +25,8 @@ public class LecturerController {
 
     @GetMapping
     @JsonView(Views.Default.class)
-    public ResponseEntity<List<Lecturer>> getLecturers() {
-        return lecturerService.getLecturers();
+    public ResponseEntity<List<Lecturer>> getLecturers(@RequestParam(value = "name", required = false) String keyword) {
+        return lecturerService.getLecturers(keyword);
     }
 
     @GetMapping("/{id}")

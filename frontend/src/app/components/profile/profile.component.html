@@ -1,2 +1,7 @@
-
-  <app-lecturer-page [userId]="currentUser.id" *ngIf="currentUser.userType == 'LECTURER'"></app-lecturer-page>
+<div class="container mt-5" [ngSwitch]="currentUser.userType">
+  <app-lecturer-page [userId]="currentUser.id" *ngSwitchCase="'LECTURER'"></app-lecturer-page>
+  <app-admin-page [userId]="currentUser.id" *ngSwitchCase="'ADMIN'"></app-admin-page>
+  <div class="alert alert-warning" role="alert" *ngSwitchDefault>
+    Нет доступных действий для вашего уровня доступа.
+  </div>
+</div>

@@ -28,9 +28,10 @@ public class AuditoriumController {
     @JsonView(Views.Auditorium.class)
     public ResponseEntity<List<Auditorium>> getAuditoriums(@RequestParam(value = "buildingId", required = false) Integer buildingId,
                                                            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date date,
-                                                           @RequestParam(value = "name", required = false) String keyword) {
+                                                           @RequestParam(value = "name", required = false) String keyword,
+                                                           @RequestParam(value = "details", required = false, defaultValue = "true") boolean hasDetails) {
 
-        return auditoriumService.getAuditoriums(buildingId, date, keyword);
+        return auditoriumService.getAuditoriums(buildingId, date, keyword, hasDetails);
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.kernel.auditoriums.service;
 
 import com.kernel.auditoriums.entity.User;
+import com.kernel.auditoriums.entity.UserType;
 import com.kernel.auditoriums.exception.ApiException;
 import com.kernel.auditoriums.repository.UserRepository;
 import com.kernel.auditoriums.security.JwtTokenProvider;
@@ -55,6 +56,7 @@ public class UserService {
     }
 
     public ResponseEntity<User> register(User user) {
+        user.setUserType(UserType.USER);
         user.setPassword(encoder.encode(user.getPassword()));
 
         User savedUser = userRepository.save(user);
@@ -63,5 +65,35 @@ public class UserService {
 
     public User getByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public ResponseEntity<User> editUser(String login, User userFromDb, User user) {
+        User authUser = getByLogin(login);
+
+        if (authUser.getUserType().equals(UserType.ADMIN) && !login.equals(userFromDb.getLogin())) {
+            return editUserByAdmin(authUser, userFromDb, user);
+        }
+
+        if (!login.equals(userFromDb.getLogin())) {
+            throw new ApiException("Access Denied", HttpStatus.FORBIDDEN);
+        }
+
+        if (user.getPassword() == null || !encoder.matches(user.getPassword(), userFromDb.getPassword())) {
+            throw new ApiException("Неверный пароль", HttpStatus.FORBIDDEN);
+        }
+
+        userFromDb.setFirstName(user.getFirstName());
+        userFromDb.setLastName(user.getLastName());
+        userFromDb.setPatronymic(user.getPatronymic());
+        return ResponseEntity.ok(userRepository.save(userFromDb));
+    }
+
+    private ResponseEntity<User> editUserByAdmin(User authUser, User userFromDb, User user) {
+        if (user.getPassword() == null || !encoder.matches(user.getPassword(), authUser.getPassword())) {
+            throw new ApiException("Неверный пароль", HttpStatus.FORBIDDEN);
+        }
+
+        userFromDb.setUserType(user.getUserType());
+        return ResponseEntity.ok(userRepository.save(userFromDb));
     }
 }

@@ -13,10 +13,17 @@ export class AuditoriumService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAuditoriums(buildingId: number | string, date: Date): Observable<Auditorium[]> {
+  getAuditoriumsWithLectures(buildingId: number | string, date: Date): Observable<Auditorium[]> {
     return this.httpClient.get<Auditorium[]>(this.baseUrl, {params: new HttpParams()
         .set('buildingId', `${buildingId}`)
         .set('date', date.toLocaleDateString())})
+      .pipe(map(response => response));
+  }
+
+  getAuditoriumsByBuilding(buildingId: number) {
+    return this.httpClient.get<Auditorium[]>(this.baseUrl, {params: new HttpParams()
+        .set('buildingId', `${buildingId}`)
+        .set('details', 'false')})
       .pipe(map(response => response));
   }
 

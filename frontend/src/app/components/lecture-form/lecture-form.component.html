@@ -63,7 +63,12 @@
         <div class="form-group row justify-content-center">
           <label for="lecturerInput{{lecture.id}}" class="col-sm-5 col-form-label">Преподаватель</label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" id="lecturerInput{{lecture.id}}" formControlName="lecturer">
+            <input type="text" class="form-control" id="lecturerInput{{lecture.id}}" formControlName="lecturer" [(ngModel)]="lecturerModel"
+                   [ngbTypeahead]="searchLecturers" [resultFormatter]="lecturerFormatter" [inputFormatter]="lecturerFormatter" (selectItem)="selectModel($event.item)"
+                   [ngClass]="{ 'is-invalid': submitted && form.lecturer?.errors }">
+            <div *ngIf="submitted && form.lecturer.errors" class="invalid-feedback">
+              <div *ngIf="form.lecturer.errors.required">Поле 'Преподаватель' не заполнено</div>
+            </div>
           </div>
         </div>
 

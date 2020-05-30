@@ -17,6 +17,13 @@ export class LecturerService {
     );
   }
 
+  getLecturers(keyword: string): Observable<Lecturer[]> {
+    return this.httpClient.get<Lecturer[]>(`http://localhost:8080/api/lecturers?name=${keyword}`).pipe(
+      map(response => response)
+    );
+  }
+
+
   editLecturer(lecturer: Lecturer) {
     return this.httpClient.put<Lecturer>(`http://localhost:8080/api/lecturers/${lecturer.id}`, lecturer).pipe(
       map(response => response)

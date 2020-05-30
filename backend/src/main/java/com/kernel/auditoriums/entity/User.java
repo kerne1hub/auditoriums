@@ -19,25 +19,25 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.User.class, Views.Lecture.class})
     private Long id;
     @Column(name = "firstname")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.User.class, Views.Lecture.class})
     private String firstName;
     @Column(name = "lastname")
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.User.class, Views.Lecture.class})
     private String lastName;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.Lecture.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Lecturer.class, Views.Group.class, Views.Subject.class, Views.User.class, Views.Lecture.class})
     private String patronymic;
-    @JsonView({Views.Extended.class, Views.Lecturer.class})
+    @JsonView({Views.Extended.class, Views.User.class, Views.Lecturer.class})
     private String email;
-    @JsonView({Views.Extended.class, Views.Lecturer.class})
+    @JsonView({Views.Extended.class, Views.User.class, Views.Lecturer.class})
     private String login;
     @JsonView(Views.Credentials.class)
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    @JsonView({Views.Default.class, Views.Lecturer.class})
+    @JsonView({Views.Default.class, Views.User.class, Views.Lecturer.class})
     private UserType userType;
 
     public User(String firstName, String lastName, String patronymic, String email, String login, String password) {

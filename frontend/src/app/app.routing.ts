@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'auditoriums', component: AuditoriumListComponent },
   { path: 'lectures', component: LectureListComponent },
   { path: '', redirectTo: '/auditoriums', pathMatch: 'full' },
-  { path: 'login', component: LoginFormComponent },
+  // { path: 'login', component: LoginFormComponent },
   { path: 'register', component: RegistrationFormComponent },
   { path: 'me', component: ProfileComponent, canActivate: [AuthGuard] },
 

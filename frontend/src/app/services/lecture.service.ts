@@ -35,7 +35,13 @@ export class LectureService {
       .pipe(map(response => response));
   }
 
-  getLectures(groupId: number | string, date: Date): Observable<Lecture[]> {
+  getLectures(date: Date): Observable<Lecture[]> {
+    return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
+        .set('date', date.toLocaleDateString())})
+      .pipe(map(response => response));
+  }
+
+  getLecturesByGroup(groupId: number | string, date: Date): Observable<Lecture[]> {
     return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
         .set('groupId', `${groupId}`)
         .set('date', date.toLocaleDateString())})

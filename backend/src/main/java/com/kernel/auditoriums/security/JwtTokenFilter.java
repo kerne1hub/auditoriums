@@ -51,7 +51,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
-        return method.equals("GET") || requestURI.equals("/api/auth/login") || (method.equals("POST") && requestURI.equals("/api/lecturers"));
+        return method.equals("GET") ||
+                requestURI.equals("/api/auth/login") ||
+                (method.equals("POST") && (requestURI.equals("/api/auth/register") || requestURI.equals("/api/lecturers")));
     }
 
     private String convertObjectToJson(Object object) throws JsonProcessingException {

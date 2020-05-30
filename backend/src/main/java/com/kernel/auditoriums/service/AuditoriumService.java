@@ -1,7 +1,9 @@
 package com.kernel.auditoriums.service;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.entity.Lecture;
+import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
 import com.kernel.auditoriums.repository.BuildingRepository;
 import com.kernel.auditoriums.repository.LectureRepository;
@@ -31,7 +33,7 @@ public class AuditoriumService {
         return calendar.getTime();
     }
 
-    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date, String keyword) {
+    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date, String keyword, boolean hasDetails) {
         Map<Integer, Auditorium>  auditoriumMap = new HashMap<>();
         List<Auditorium> auditoriums;
 
