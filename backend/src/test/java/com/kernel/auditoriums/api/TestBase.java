@@ -81,6 +81,7 @@ public class TestBase {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.setTimeZone(TimeZone.getTimeZone("Asia/Omsk"));
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         }
