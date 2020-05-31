@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class TestBase {
 
@@ -79,6 +80,7 @@ public class TestBase {
     private void checkDay(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Omsk"));
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         }
