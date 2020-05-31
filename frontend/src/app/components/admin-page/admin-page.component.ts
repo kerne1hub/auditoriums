@@ -18,6 +18,8 @@ import {LecturerService} from '../../services/lecturer.service';
 import {LectureFormComponent} from '../lecture-form/lecture-form.component';
 import {AuthenticationService} from '../../services/authentication.service';
 import {Lecturer} from '../../common/lecturer';
+import {Building} from '../../common/building';
+import {BuildingService} from '../../services/building.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -26,6 +28,9 @@ import {Lecturer} from '../../common/lecturer';
 })
 export class AdminPageComponent implements OnInit, OnDestroy {
 
+  buildingName = 'Здание';
+  buildings: Building[];
+  currentBuildingId = 1;
   date: NgbDateStruct;
   @Input() userId: number;
   user: User;
@@ -39,6 +44,7 @@ export class AdminPageComponent implements OnInit, OnDestroy {
   constructor(
     private alertService: AlertService,
     private authService: AuthenticationService,
+    private buildingService: BuildingService,
     private lectureService: LectureService,
     private lecturerService: LecturerService,
     private resolver: ComponentFactoryResolver,
@@ -51,7 +57,8 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fillDate();
-    this.getLectures();
+    this.getBuildings();
+    this.getLectures(this.currentBuildingId);
     this.getUndefinedLectures();
     this.getUser();
   }
@@ -97,6 +104,12 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     this.createComponent('user', instance);
   }
 
+  deleteLecture(id: number) {
+    this.lectureService.deleteLecture(id).subscribe(
+      () => location.reload()
+    );
+  }
+
   // month values in 0..11
   private fillDate() {
     const date = new Date();
@@ -123,6 +136,12 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     return this.lectureService.getActiveTab();
   }
 
+  getBuildings() {
+    this.buildingService.getBuildings().subscribe(
+      data => this.buildings = data
+    );
+  }
+
   setActiveTab(tab: string) {
     this.lectureService.setActiveTab(tab);
   }
@@ -140,9 +159,11 @@ export class AdminPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  getLectures() {
+  getLectures(buildingId: number) {
+    this.currentBuildingId = buildingId;
+
     const date = new Date(this.date.year, this.date.month - 1, this.date.day);
-    this.lectureService.getLectures(date).subscribe(
+    this.lectureService.getLecturesByBuilding(buildingId, date).subscribe(
       data => {
         this.deserializeContent(data);
         this.lectures = data;
@@ -200,20 +221,21 @@ export class AdminPageComponent implements OnInit, OnDestroy {
 
   setPrevWeek() {
     this.setWeek(true);
-    this.getLectures();
+    this.getLectures(this.currentBuildingId);
     this.getUndefinedLectures();
   }
 
   setNextWeek() {
     this.setWeek();
-    this.getLectures();
+    this.getLectures(this.currentBuildingId);
     this.getUndefinedLectures();
   }
 
   private setWeek(inverse = false) {
-    const currentDate = new Date(this.date.year, this.date.month, this.date.day);
+    const currentDate = new Date(this.date.year, this.date.month  - 1, this.date.day);
+
     currentDate.setDate(inverse? this.date.day - 7 : this.date.day + 7);
-    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth(), day: currentDate.getDate() }
+    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() }
   }
 
 }

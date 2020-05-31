@@ -97,9 +97,10 @@ export class LectureListComponent implements OnInit {
   }
 
   private setWeek(inverse = false) {
-    const currentDate = new Date(this.date.year, this.date.month, this.date.day);
+    const currentDate = new Date(this.date.year, this.date.month  - 1, this.date.day);
+
     currentDate.setDate(inverse? this.date.day - 7 : this.date.day + 7);
-    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth(), day: currentDate.getDate() }
+    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() }
   }
 
   selectGroup(group: Group) {

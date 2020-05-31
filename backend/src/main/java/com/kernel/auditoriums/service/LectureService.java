@@ -37,16 +37,16 @@ public class LectureService {
     }
 
     //TODO: It needs to be redone
-    public ResponseEntity<List<Lecture>> getLectures(boolean isUndefined, Long groupId, Long lecturerId, Date date) {
+    public ResponseEntity<List<Lecture>> getLectures(boolean isUndefined, Integer buildingId, Long groupId, Long lecturerId, Date date) {
         Date startWeekDate;
         Date endWeekDate;
 
         if (date == null) {
             startWeekDate = setDayOfWeek(new Date(), Calendar.MONDAY);
-            endWeekDate = setDayOfWeek(new Date(), Calendar.SATURDAY);
+            endWeekDate = setDayOfWeek(new Date(), Calendar.SUNDAY);
         } else {
             startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
-            endWeekDate = setDayOfWeek(date, Calendar.SATURDAY);
+            endWeekDate = setDayOfWeek(date, Calendar.SUNDAY);
         }
 
         if (isUndefined) {
@@ -56,7 +56,10 @@ public class LectureService {
             return ResponseEntity.ok(lectureRepository.findAllByLecturerIdAndGroupIdAndDateBetweenOrderByDate(lecturerId, groupId, startWeekDate, endWeekDate));
         }
         if (groupId == null && lecturerId == null) {
-            return ResponseEntity.ok(lectureRepository.findAllByDateBetween(startWeekDate, endWeekDate));
+            if (buildingId != null) {
+                return ResponseEntity.ok(lectureRepository.findAllByAuditorium_BuildingIdAndDateBetweenOrderByDate(buildingId, startWeekDate, endWeekDate));
+            }
+            return ResponseEntity.ok(lectureRepository.findAllByDateBetweenOrderByDate(startWeekDate, endWeekDate));
         }
         if (groupId != null) {
             return ResponseEntity.ok(lectureRepository.findAllByGroupIdAndDateBetweenOrderByDate(groupId, startWeekDate, endWeekDate));

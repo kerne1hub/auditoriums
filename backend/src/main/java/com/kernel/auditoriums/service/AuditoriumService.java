@@ -62,7 +62,7 @@ public class AuditoriumService {
                 }
 
             } else {
-                auditoriums = auditoriumRepository.findAllByBuildingId(buildingId);
+                auditoriums = auditoriumRepository.findAllByBuildingIdWithBuilding(buildingId);
             }
         }
         return ResponseEntity.ok(auditoriums);

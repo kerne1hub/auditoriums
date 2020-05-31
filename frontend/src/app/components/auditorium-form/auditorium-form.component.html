@@ -1,0 +1,60 @@
+<div class="modal fade" id="auditorium_form" tabindex="-1" role="dialog" aria-labelledby="auditorium_form-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="auditorium_dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lectureLabel">Информация об аудитории</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="auditoriumForm" class="modal-body">
+        <div class="form-group row justify-content-center">
+          <label for="nameInput{{auditorium.id}}" class="col-sm-5 col-form-label">Название</label>
+          <div class="input-group col-sm-7">
+            <input type="text" class="form-control" formControlName="name" id="nameInput{{auditorium.id}}" placeholder="Название" [ngClass]="{ 'is-invalid': submitted && form.name?.errors }">
+            <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+              <div *ngIf="form.name.errors.required">Поле 'Название' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="capacityInput{{auditorium.id}}" class="col-sm-5 col-form-label">Вместимость</label>
+          <div class="input-group col-sm-7">
+            <input type="number" class="form-control" formControlName="capacity" id="capacityInput{{auditorium.id}}" placeholder="Вместимость" [ngClass]="{ 'is-invalid': submitted && form.capacity?.errors }">
+            <div *ngIf="submitted && form.capacity.errors" class="invalid-feedback">
+              <div *ngIf="form.capacity.errors.required">Поле 'Вместимость' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="buildingInput{{auditorium.id}}" class="col-sm-5 col-form-label">Здание</label>
+          <div class="col-sm-7">
+            <input type="text" class="form-control" id="buildingInput{{auditorium.id}}" formControlName="building" [(ngModel)]="buildingModel"
+                   [ngbTypeahead]="searchBuildings" [resultFormatter]="formatter" [inputFormatter]="formatter" (selectItem)="selectModel($event.item)"
+                   [ngClass]="{ 'is-invalid': submitted && form.building?.errors }">
+            <div *ngIf="submitted && form.building.errors" class="invalid-feedback">
+              <div *ngIf="form.building.errors.required">Поле 'Здание' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="activeInput{{auditorium.id}}" formControlName="active">
+          <label class="form-check-label" for="activeInput{{auditorium.id}}"> Доступна?</label>
+        </div>
+
+      </form>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" (click)="save()">OK</button>
+      </div>
+      <div class="justify-content-center m-2">
+        <app-alert></app-alert>
+      </div>
+    </div>
+  </div>
+</div>

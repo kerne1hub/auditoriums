@@ -47,8 +47,8 @@
               <form class="form-inline ml-4">
                 <div class="form-group">
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" (keyup.enter)="getLectures()"
-                           ngbDatepicker #d="ngbDatepicker" (dateSelect)="getLectures()">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" (keyup.enter)="getLectures(currentBuildingId)"
+                           ngbDatepicker #d="ngbDatepicker" (dateSelect)="getLectures(currentBuildingId)">
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
                         <i class="fa fa-calendar-alt"></i>
@@ -62,6 +62,17 @@
                 <button class="btn btn-outline-secondary" type="button" (click)="setPrevWeek()"><span class="fa fa-arrow-left"></span></button>
                 <button class="btn btn-outline-secondary" type="button" (click)="setNextWeek()"><span class="fa fa-arrow-right"></span></button>
               </div>
+
+              <div class="dropdown ml-2">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">{{ buildingName }}
+                </button>
+                <div class="dropdown-menu">
+                  <button class="dropdown-item" *ngFor="let building of buildings" type="button"
+                          (click)="getLectures(building.id); buildingName = building.name;">{{ building.name }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -74,6 +85,7 @@
               <th scope="col">Группа</th>
               <th scope="col">Преподаватель</th>
               <th scope="col">Предмет</th>
+              <th scope="col">Опции</th>
             </tr>
             </thead>
             <tbody>
@@ -82,15 +94,18 @@
               <td>{{lecture.date | date: 'E, d.MM HH:mm'}}</td>
               <td>{{lecture.auditorium.name}}</td>
               <td>{{lecture.group.name}}</td>
-              <td>{{lecture.lecturer?.lastName + ' ' + lecture.lecturer?.firstName.charAt(0) + '. ' + lecture.lecturer?.patronymic.charAt(0) + '.'}}</td>
+              <td>{{lecture.lecturer?
+                lecture.lecturer?.lastName + ' ' + lecture.lecturer?.firstName.charAt(0) + '. ' + lecture.lecturer?.patronymic.charAt(0) + '.'
+                : ''}}</td>
               <td>{{lecture.subject.name}}</td>
               <td>
-                <a class="btn btn-link p-0" (click)="clearErrors(); createLectureForm(lecture);" data-toggle="modal" data-target="#lecture_form"><span class="fa fa-edit d-block"></span></a>
+                <a class="btn btn-link p-0" style="color: orange" (click)="clearErrors(); createLectureForm(lecture);" data-toggle="modal" data-target="#lecture_form"><span class="fa fa-edit d-block"></span></a>
+                <a class="btn btn-link p-0 ml-1" style="color: red" (click)="deleteLecture(lecture.id)"><span class="fa fa-trash-alt d-block"></span></a>
               </td>
             </tr>
             </tbody>
           </table>
-          <a class="btn btn-outline-secondary mt-2" (click)="clearErrors(); createLectureForm();" data-toggle="modal" data-target="#lecture_form">Добавить</a>
+          <a class="btn btn-outline-success mt-2" (click)="clearErrors(); createLectureForm();" data-toggle="modal" data-target="#lecture_form">Добавить</a>
 
           <h5 class="mt-5">Нераспределенные занятия</h5>
           <table class="table table-bordered table-sm" style="max-height: 500px">
@@ -101,6 +116,7 @@
               <th scope="col">Аудитория</th>
               <th scope="col">Группа</th>
               <th scope="col">Предмет</th>
+              <th scope="col">Опции</th>
             </tr>
             </thead>
             <tbody>
@@ -111,10 +127,11 @@
               <td>{{lecture.group.name}}</td>
               <td>{{lecture.subject.name}}</td>
               <td>
-                <a class="btn btn-link p-0" (click)="clearErrors(); createLectureForm(lecture)" data-toggle="modal" data-target="#lecture_form">
+                <a class="btn btn-link p-0" style="color:green;" (click)="clearErrors(); createLectureForm(lecture)" data-toggle="modal" data-target="#lecture_form">
                   <span *ngIf="loading; else add" class="spinner-border spinner-border-sm mr-1"></span>
                   <ng-template #add><span  class="fa fa-plus d-block"></span></ng-template>
                 </a>
+                <a class="btn btn-link p-0 ml-1" style="color:red;" (click)="deleteLecture(lecture.id)"><span class="fa fa-trash-alt d-block"></span></a>
               </td>
             </tr>
             </tbody>

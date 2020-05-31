@@ -36,4 +36,18 @@ export class AuditoriumService {
         .set('name', term)})
       .pipe(map(response => response));
   }
+
+  addAuditorium(auditoriumDto: any) {
+    return this.httpClient.post<Auditorium>(this.baseUrl, auditoriumDto)
+      .pipe(map(response => response));
+  }
+
+  editAuditorium(id: number, auditoriumDto: any) {
+    return this.httpClient.put<Auditorium>(this.baseUrl + `/${id}`, auditoriumDto)
+      .pipe(map(response => response));
+  }
+
+  deleteAuditorium(id: number) {
+    return this.httpClient.delete(this.baseUrl + `/${id}`);
+  }
 }

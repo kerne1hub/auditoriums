@@ -41,6 +41,13 @@ export class LectureService {
       .pipe(map(response => response));
   }
 
+  getLecturesByBuilding(buildingId: number, date: Date) {
+    return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
+        .set('date', date.toLocaleDateString())
+        .set('buildingId', `${buildingId}`)})
+      .pipe(map(response => response));
+  }
+
   getLecturesByGroup(groupId: number | string, date: Date): Observable<Lecture[]> {
     return this.httpClient.get<Lecture[]>(this.baseUrl, { params: new HttpParams()
         .set('groupId', `${groupId}`)
@@ -85,5 +92,9 @@ export class LectureService {
   editLecture(lectureId: number, lectureDto: any) {
     return this.httpClient.put<Lecture>(this.baseUrl + `/${lectureId}`, lectureDto)
       .pipe(map(response => response));
+  }
+
+  deleteLecture(id: number) {
+    return this.httpClient.delete(this.baseUrl + `/${id}`);
   }
 }

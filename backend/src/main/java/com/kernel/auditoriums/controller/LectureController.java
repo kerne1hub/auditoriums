@@ -26,10 +26,11 @@ public class LectureController {
     @GetMapping
     @JsonView(Views.Lecture.class)
     public ResponseEntity<List<Lecture>> getLectures(@RequestParam(value = "undefined", required = false) boolean isUndefined,
+                                                     @RequestParam(value = "buildingId", required = false) Integer buildingId,
                                                      @RequestParam(value = "groupId", required = false) Long groupId,
                                                      @RequestParam(value = "lecturerId", required = false) Long lecturerId,
                                                      @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date date) {
-        return lectureService.getLectures(isUndefined, groupId, lecturerId, date);
+        return lectureService.getLectures(isUndefined, buildingId, groupId, lecturerId, date);
     }
 
     @GetMapping("/{id}")

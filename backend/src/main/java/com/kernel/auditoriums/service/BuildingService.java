@@ -19,7 +19,10 @@ public class BuildingService {
         this.repository = repository;
     }
 
-    public ResponseEntity<List<Building>> getBuildings() {
+    public ResponseEntity<List<Building>> getBuildings(String keyword) {
+        if (keyword != null) {
+            return ResponseEntity.ok(repository.findAllByNameContains(keyword));
+        }
         return ResponseEntity.ok(repository.findAll());
     }
 

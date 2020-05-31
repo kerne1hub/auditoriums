@@ -14,9 +14,10 @@
   <thead>
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Номер</th>
+    <th scope="col">Аудитория</th>
     <th scope="col">Вместимость</th>
     <th scope="col">Доступ</th>
+    <th scope="col">Опции</th>
   </tr>
   </thead>
   <tbody>
@@ -24,11 +25,12 @@
     <th scope="row">{{i+1}}</th>
     <td>{{auditorium.name}}</td>
     <td>{{auditorium.capacity}}</td>
-    <td>{{auditorium.active}}</td>
+    <td>{{auditorium.active? 'да': 'нет'}}</td>
     <td>
-      <a class="btn btn-link p-0" data-toggle="modal" data-target="#lecture_form"><span class="fa fa-edit d-block"></span></a>
+      <a class="btn btn-link p-0" (click)="clearErrors(); createAuditoriumForm(auditorium);" style="color: orange" data-toggle="modal" data-target="#auditorium_form"><span class="fa fa-edit d-block"></span></a>
+      <a class="btn btn-link p-0 ml-1" (click)="deleteAuditorium(auditorium.id)" style="color: red"><span class="fa fa-trash-alt d-block"></span></a>
     </td>
   </tr>
   </tbody>
 </table>
-<a class="btn btn-outline-secondary mt-2" data-toggle="modal" data-target="#lecture_form">Добавить</a>
+<a class="btn btn-outline-success mt-2" (click)="clearErrors(); createAuditoriumForm();" data-toggle="modal" data-target="#auditorium_form">Добавить</a>

@@ -30,9 +30,9 @@ public class Auditorium {
     private boolean active;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id")
-    @JsonView(Views.Building.class)
+    @JsonView({Views.Auditorium.class, Views.Building.class})
     private Building building;
-    @JsonView(Views.Auditorium.class)
+    @JsonView({Views.Auditorium.class, Views.Building.class})
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
     private Set<Lecture> lectures = new TreeSet<>();
 
@@ -51,5 +51,11 @@ public class Auditorium {
         this.id = id;
     }
 
-
+    public Auditorium(Integer id, String name, int capacity, boolean active, Building building) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.active = active;
+        this.building = building;
+    }
 }

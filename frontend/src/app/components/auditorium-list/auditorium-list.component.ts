@@ -79,13 +79,20 @@ export class AuditoriumListComponent implements OnInit {
   }
 
   setPrevWeek() {
-    this.date = {...this.date, day: this.date.day-7};
+    this.setWeek(true);
     this.getSchedule(this.currentBuildingId);
   }
 
   setNextWeek() {
-    this.date = {...this.date, day: this.date.day+7};
+    this.setWeek();
     this.getSchedule(this.currentBuildingId);
+  }
+
+  private setWeek(inverse = false) {
+    const currentDate = new Date(this.date.year, this.date.month  - 1, this.date.day);
+
+    currentDate.setDate(inverse? this.date.day - 7 : this.date.day + 7);
+    this.date = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() }
   }
 
   private deserializeContent(data: Auditorium[]) {

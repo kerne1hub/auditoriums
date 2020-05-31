@@ -8,4 +8,8 @@ export class Auditorium {
   active: boolean;
   building: Building;
   lectures: Lecture[];
+
+
+  constructor() {
+  }
 }

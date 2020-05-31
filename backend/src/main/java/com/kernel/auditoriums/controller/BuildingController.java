@@ -21,8 +21,8 @@ public class BuildingController {
 
     @GetMapping
     @JsonView(Views.Default.class)
-    public ResponseEntity<List<Building>> getBuildings() {
-        return buildingService.getBuildings();
+    public ResponseEntity<List<Building>> getBuildings(@RequestParam(value = "name", required = false) String keyword) {
+        return buildingService.getBuildings(keyword);
     }
 
     @GetMapping("/{id}")

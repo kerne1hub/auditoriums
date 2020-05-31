@@ -23,6 +23,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 import { LectureFormComponent } from './components/lecture-form/lecture-form.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { AuditoriumsTabComponent } from './components/profile/auditoriums-tab/auditoriums-tab.component';
+import { AuditoriumFormComponent } from './components/auditorium-form/auditorium-form.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -41,6 +42,7 @@ registerLocaleData(localeRu, 'ru');
     LectureFormComponent,
     AdminPageComponent,
     AuditoriumsTabComponent,
+    AuditoriumFormComponent,
   ],
   imports: [
     appRoutingModule,
