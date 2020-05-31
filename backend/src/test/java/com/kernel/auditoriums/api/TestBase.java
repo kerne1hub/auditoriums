@@ -71,7 +71,6 @@ public class TestBase {
                                                            Integer subjectId, Long groupId, Integer auditoriumId) {
         Date date = new Date();
         checkDay(date);
-
         Lecture lecture = new Lecture(date, lecturerId, subjectId, groupId, auditoriumId);
         HttpEntity<Lecture> entity = getEntityWithAuth(lecture);
         return restTemplate.postForEntity(url, entity, Lecture.class);
@@ -85,6 +84,7 @@ public class TestBase {
         }
 
         date.setTime(calendar.getTime().getTime());
+        System.out.println("CalendarTime: " + calendar.toString());
     }
 
     protected ResponseEntity<List<Lecture>> getLectureList(TestRestTemplate restTemplate, String url) {
