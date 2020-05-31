@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,11 +66,25 @@ public class TestBase {
         return restTemplate.postForEntity(url, entity, Group.class);
     }
 
+//    WARN: Avoid creating lecture on Sunday
     protected ResponseEntity<Lecture> createLecture(TestRestTemplate restTemplate, String url, Long lecturerId,
                                                            Integer subjectId, Long groupId, Integer auditoriumId) {
-        Lecture lecture = new Lecture(new Date(), lecturerId, subjectId, groupId, auditoriumId);
+        Date date = new Date();
+        checkDay(date);
+
+        Lecture lecture = new Lecture(date, lecturerId, subjectId, groupId, auditoriumId);
         HttpEntity<Lecture> entity = getEntityWithAuth(lecture);
         return restTemplate.postForEntity(url, entity, Lecture.class);
+    }
+
+    private void checkDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        }
+
+        date.setTime(calendar.getTime().getTime());
     }
 
     protected ResponseEntity<List<Lecture>> getLectureList(TestRestTemplate restTemplate, String url) {
