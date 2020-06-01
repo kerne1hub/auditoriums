@@ -5,6 +5,7 @@ sudo: true
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 before_install:
+  - export TZ=Asia/Omsk
   - mysql -e 'CREATE DATABASE auditoriums_test;'
   - mysql -u root -e "CREATE USER 'kernel'@'localhost' IDENTIFIED BY '${dbPass}';"
   - mysql -u root -e "GRANT ALL ON auditoriums_test.* TO 'kernel'@'localhost';"

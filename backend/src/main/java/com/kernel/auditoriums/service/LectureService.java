@@ -32,6 +32,9 @@ public class LectureService {
     private Date setDayOfWeek(Date date, int dayOfWeek) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         return calendar.getTime();
     }
