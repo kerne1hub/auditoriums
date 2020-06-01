@@ -32,7 +32,7 @@ public class Auditorium {
     @JoinColumn(name = "building_id")
     @JsonView({Views.Auditorium.class, Views.Building.class, Views.Lecture.class})
     private Building building;
-    @JsonView({Views.Building.class, Views.Lecture.class})
+    @JsonView({Views.Auditorium.class, Views.Building.class})
     @OneToMany(mappedBy = "auditorium", fetch = FetchType.LAZY)
     private Set<Lecture> lectures = new TreeSet<>();
 

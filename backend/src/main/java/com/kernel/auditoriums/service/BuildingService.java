@@ -37,4 +37,14 @@ public class BuildingService {
     public ResponseEntity<Building> createBuilding(Building building) {
         return new ResponseEntity<>(repository.save(building), HttpStatus.CREATED);
     }
+
+    public void deleteBuilding(Building building) {
+        repository.delete(building);
+    }
+
+    public ResponseEntity<Building> editBuilding(Building buildingFromDb, Building building) {
+        buildingFromDb.setName(building.getName());
+        buildingFromDb.setAddress(building.getAddress());
+        return ResponseEntity.ok(repository.save(buildingFromDb));
+    }
 }

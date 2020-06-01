@@ -18,6 +18,9 @@
           <li class="nav-item">
             <a class="nav-link {{isActiveTab('auditoriums')}}" id="auditoriums-tab" (click)="setActiveTab('auditoriums')" data-toggle="tab" href="#auditoriums" role="tab" aria-controls="auditoriums" aria-selected="false">Аудитории</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{isActiveTab('buildings')}}" id="buildings-tab" (click)="setActiveTab('buildings')" data-toggle="tab" href="#buildings" role="tab" aria-controls="buildings" aria-selected="false">Здания</a>
+          </li>
         </ul>
       </div>
       <div class="card-body tab-content" id="adminContent">
@@ -139,7 +142,9 @@
         </div>
         <div class="tab-pane fade show {{isActiveTab('auditoriums')}}" id="auditoriums" role="tabpanel" aria-labelledby="auditoriums-tab">
           <app-auditoriums-tab></app-auditoriums-tab>
-
+        </div>
+        <div class="tab-pane fade show {{isActiveTab('buildings')}}" id="buildings" role="tabpanel" aria-labelledby="buildings-tab">
+          <app-buildings-tab></app-buildings-tab>
         </div>
       </div>
     </div>

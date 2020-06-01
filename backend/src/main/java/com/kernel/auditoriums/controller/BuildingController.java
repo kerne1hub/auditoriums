@@ -36,4 +36,15 @@ public class BuildingController {
     public ResponseEntity<Building> createBuilding(@RequestBody Building Building) {
         return buildingService.createBuilding(Building);
     }
+
+    @PutMapping("/{id}")
+    @JsonView(Views.Default.class)
+    public ResponseEntity<Building> editBuilding(@PathVariable("id") Building buildingFromDb, @RequestBody Building Building) {
+        return buildingService.editBuilding(buildingFromDb, Building);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBuilding(@PathVariable("id") Building building) {
+        buildingService.deleteBuilding(building);
+    }
 }

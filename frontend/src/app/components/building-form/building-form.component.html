@@ -1,0 +1,43 @@
+<div class="modal fade" id="building_form" tabindex="-1" role="dialog" aria-labelledby="building_form-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="building_dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="buildingLabel">Информация о здании</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="buildingForm" class="modal-body">
+        <div class="form-group row justify-content-center">
+          <label for="nameInput{{building.id}}" class="col-sm-5 col-form-label">Обозначение</label>
+          <div class="input-group col-sm-7">
+            <input type="text" class="form-control" formControlName="name" id="nameInput{{building.id}}" placeholder="Обозначение" [ngClass]="{ 'is-invalid': submitted && form.name?.errors }">
+            <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+              <div *ngIf="form.name.errors.required">Поле 'Обозначение' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-center">
+          <label for="addressInput{{building.id}}" class="col-sm-5 col-form-label">Адрес</label>
+          <div class="input-group col-sm-7">
+            <input type="text" class="form-control" formControlName="address" id="addressInput{{building.id}}" placeholder="Адрес" [ngClass]="{ 'is-invalid': submitted && form.address?.errors }">
+            <div *ngIf="submitted && form.address.errors" class="invalid-feedback">
+              <div *ngIf="form.address.errors.required">Поле 'Адрес' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" (click)="save()">OK</button>
+      </div>
+      <div class="justify-content-center m-2">
+        <app-alert></app-alert>
+      </div>
+    </div>
+  </div>
+</div>
