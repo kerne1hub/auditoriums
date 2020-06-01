@@ -52,6 +52,8 @@ public class LectureService {
             endWeekDate = setDayOfWeek(date, Calendar.SUNDAY);
         }
 
+        System.out.println("Get lectures between " + startWeekDate + " and " + endWeekDate);
+
         if (isUndefined) {
             return ResponseEntity.ok(lectureRepository.findAllByLecturerIdIsNullAndDateBetweenOrderByDate(startWeekDate, endWeekDate));
         }
@@ -80,6 +82,7 @@ public class LectureService {
     }
 
     public ResponseEntity<Lecture> createLecture(Lecture dto) {
+        System.out.println("Create lecture on: " + dto.getDate());
         return createLectureEntity(dto, dto);
     }
 
