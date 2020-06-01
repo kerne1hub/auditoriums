@@ -7,6 +7,17 @@
       <button class="btn btn-sm btn-outline-secondary">Export</button>
     </div>
 
+    <div class="dropdown ml-2">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">{{ buildingName }}
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" *ngFor="let building of buildings" type="button"
+                (click)="getAuditoriums(building.id); buildingName = building.name;">{{ building.name }}
+        </button>
+      </div>
+
+  </div>
   </div>
 </div>
 

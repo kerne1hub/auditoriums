@@ -14,6 +14,7 @@ import {AlertService} from '../../../services/alert.service';
 export class AuditoriumsTabComponent implements OnInit {
 
   auditoriums: Auditorium[];
+  buildingName = 'Здание';
   buildings: Building[];
   currentBuildingId = 1;
   private auditoriumFormRef: ComponentRef<AuditoriumFormComponent>;

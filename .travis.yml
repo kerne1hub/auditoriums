@@ -14,4 +14,4 @@ jdk:
   - oraclejdk8
 script:
   - cd backend
-  - mvn clean compile test
+  - mvn clean compile test -Dstyle.color=always

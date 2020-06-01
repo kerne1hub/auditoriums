@@ -80,6 +80,7 @@ public class AuditoriumService {
     public ResponseEntity<Auditorium> updateAuditorium(Auditorium auditoriumFromDb, Auditorium auditorium) {
         auditoriumFromDb.setName(auditorium.getName());
         auditoriumFromDb.setCapacity(auditorium.getCapacity());
+        auditoriumFromDb.setBuilding(buildingRepository.getOne(auditorium.getBuildingId()));
         auditoriumFromDb.setActive(auditorium.isActive());
 
         return ResponseEntity.ok(auditoriumRepository.save(auditoriumFromDb));
