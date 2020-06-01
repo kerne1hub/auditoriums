@@ -19,9 +19,9 @@ import java.util.Set;
 public class Building {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Building.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Building.class, Views.Lecture.class})
     private Integer id;
-    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Building.class})
+    @JsonView({Views.Default.class, Views.Auditorium.class, Views.Building.class, Views.Lecture.class})
     private String name;
     @JsonView({Views.Default.class, Views.Auditorium.class, Views.Building.class})
     private String address;

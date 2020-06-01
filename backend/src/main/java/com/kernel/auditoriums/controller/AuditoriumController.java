@@ -25,7 +25,7 @@ public class AuditoriumController {
     }
 
     @GetMapping
-    @JsonView(Views.Auditorium.class)
+    @JsonView(Views.Lecture.class)
     public ResponseEntity<List<Auditorium>> getAuditoriums(@RequestParam(value = "buildingId", required = false) Integer buildingId,
                                                            @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") Date date,
                                                            @RequestParam(value = "name", required = false) String keyword,
@@ -41,7 +41,7 @@ public class AuditoriumController {
     }
 
     @PostMapping
-    @JsonView(Views.Default.class)
+    @JsonView(Views.Auditorium.class)
     public ResponseEntity<Auditorium> createAuditorium(@RequestBody Auditorium auditorium) {
         return auditoriumService.createAuditorium(auditorium);
     }
@@ -52,7 +52,7 @@ public class AuditoriumController {
     }
 
     @PutMapping("/{id}")
-    @JsonView(Views.Default.class)
+    @JsonView(Views.Auditorium.class)
     public ResponseEntity<Auditorium> updateAuditorium(@PathVariable("id") Auditorium auditoriumFromDb,
                                                        @RequestBody Auditorium auditorium) {
         return auditoriumService.updateAuditorium(auditoriumFromDb, auditorium);

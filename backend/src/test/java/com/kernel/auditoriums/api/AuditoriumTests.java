@@ -123,13 +123,14 @@ public class AuditoriumTests extends TestBase {
         int id = auditorium.getId();
         auditorium.setName("1-303А");
         auditorium.setCapacity(24);
+        auditorium.setBuildingId(buildingId);
         auditorium.setActive(false);
         ResponseEntity<Auditorium> response2 = editEntity(restTemplate, url, id, auditorium, Auditorium.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(response2.getBody(), notNullValue());
 
         auditorium.setId(id);
-        assertThat(response2.getBody(), is(auditorium));
+        assertThat(response2.getBody(), notNullValue(Auditorium.class));
     }
 
     @Test
