@@ -63,7 +63,7 @@ export class LectureFormComponent implements OnInit {
 
   formatter = (model: { name: string }) => model.name;
   lecturerFormatter = (model: { id: number, lastName: string, firstName: string, patronymic: string }) =>
-    model.id? model.lastName + ' ' + String(model.firstName).charAt(0) + '. ' + String(model.lastName).charAt(0) + '.': '';
+    model.id? model.lastName + ' ' + String(model.firstName).charAt(0) + '. ' + String(model.patronymic).charAt(0) + '.': '';
 
   constructor(private fb: FormBuilder,
               private alertService: AlertService,

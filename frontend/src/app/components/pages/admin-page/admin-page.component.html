@@ -21,6 +21,12 @@
           <li class="nav-item">
             <a class="nav-link {{isActiveTab('buildings')}}" id="buildings-tab" (click)="setActiveTab('buildings')" data-toggle="tab" href="#buildings" role="tab" aria-controls="buildings" aria-selected="false">Здания</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{isActiveTab('groups')}}" id="groups-tab" (click)="setActiveTab('groups')" data-toggle="tab" href="#groups" role="tab" aria-controls="groups" aria-selected="false">Группы</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{isActiveTab('subjects')}}" id="subjects-tab" (click)="setActiveTab('subjects')" data-toggle="tab" href="#subjects" role="tab" aria-controls="subjects" aria-selected="false">Предметы</a>
+          </li>
         </ul>
       </div>
       <div class="card-body tab-content" id="adminContent">
@@ -145,6 +151,12 @@
         </div>
         <div class="tab-pane fade show {{isActiveTab('buildings')}}" id="buildings" role="tabpanel" aria-labelledby="buildings-tab">
           <app-buildings-tab></app-buildings-tab>
+        </div>
+        <div class="tab-pane fade show {{isActiveTab('groups')}}" id="groups" role="tabpanel" aria-labelledby="groups-tab">
+          <app-groups-tab></app-groups-tab>
+        </div>
+        <div class="tab-pane fade show {{isActiveTab('subjects')}}" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
+          <app-subjects-tab></app-subjects-tab>
         </div>
       </div>
     </div>

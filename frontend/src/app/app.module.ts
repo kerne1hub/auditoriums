@@ -26,6 +26,10 @@ import { AuditoriumsTabComponent } from './components/profile/tabs/auditoriums-t
 import { AuditoriumFormComponent } from './components/forms/auditorium-form/auditorium-form.component';
 import { BuildingsTabComponent } from './components/profile/tabs/buildings-tab/buildings-tab.component';
 import { BuildingFormComponent } from './components/forms/building-form/building-form.component';
+import { GroupFormComponent } from './components/forms/group-form/group-form.component';
+import { GroupsTabComponent } from './components/profile/tabs/groups-tab/groups-tab.component';
+import { SubjectsTabComponent } from './components/profile/tabs/subjects-tab/subjects-tab.component';
+import { SubjectFormComponent } from './components/forms/subject-form/subject-form.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -47,6 +51,10 @@ registerLocaleData(localeRu, 'ru');
     AuditoriumFormComponent,
     BuildingsTabComponent,
     BuildingFormComponent,
+    GroupFormComponent,
+    GroupsTabComponent,
+    SubjectsTabComponent,
+    SubjectFormComponent,
   ],
   imports: [
     appRoutingModule,

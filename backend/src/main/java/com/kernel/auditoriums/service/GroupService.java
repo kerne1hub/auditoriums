@@ -42,4 +42,9 @@ public class GroupService {
     public void deleteGroup(Group group) {
         repository.delete(group);
     }
+
+    public ResponseEntity<Group> editGroup(Group groupFromDb, Group group) {
+        groupFromDb.setName(group.getName());
+        return ResponseEntity.ok(repository.save(groupFromDb));
+    }
 }

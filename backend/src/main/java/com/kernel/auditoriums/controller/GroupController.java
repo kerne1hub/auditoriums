@@ -1,6 +1,7 @@
 package com.kernel.auditoriums.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.kernel.auditoriums.entity.Building;
 import com.kernel.auditoriums.entity.Group;
 import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.service.GroupService;
@@ -37,6 +38,12 @@ public class GroupController {
     @JsonView(Views.Default.class)
     public ResponseEntity<Group> createGroup(@RequestBody Group group) {
         return groupService.createGroup(group);
+    }
+
+    @PutMapping("/{id}")
+    @JsonView(Views.Default.class)
+    public ResponseEntity<Group> editGroup(@PathVariable("id") Group groupFromDb, @RequestBody Group group) {
+        return groupService.editGroup(groupFromDb, group);
     }
 
     @DeleteMapping("/{id}")

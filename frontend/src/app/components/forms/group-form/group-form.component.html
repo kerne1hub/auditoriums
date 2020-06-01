@@ -1,0 +1,33 @@
+<div class="modal fade" id="group_form" tabindex="-1" role="dialog" aria-labelledby="group_form-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" id="group_dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="groupLabel">Информация о группе</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form [formGroup]="groupForm" class="modal-body">
+        <div class="form-group row justify-content-center">
+          <label for="nameInput{{group.id}}" class="col-sm-5 col-form-label">Название</label>
+          <div class="input-group col-sm-7">
+            <input type="text" class="form-control" formControlName="name" id="nameInput{{group.id}}" placeholder="Название группы" [ngClass]="{ 'is-invalid': submitted && form.name?.errors }">
+            <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+              <div *ngIf="form.name.errors.required">Поле 'Название' не заполнено</div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-success" (click)="save()">OK</button>
+      </div>
+      <div class="justify-content-center m-2">
+        <app-alert></app-alert>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="card-title">
+  <div class="btn-toolbar mb-3">
+    <h5>Группы</h5>
+
+    <div class="btn-group ml-auto">
+      <button class="btn btn-sm btn-outline-secondary">Import</button>
+      <button class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+
+  </div>
+</div>
+
+<table class="table table-bordered table-sm" style="max-height: 500px">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Название</th>
+    <th scope="col">Опции</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let group of groups; index as i">
+    <th scope="row">{{i+1}}</th>
+    <td>{{group.name}}</td>
+    <td>
+      <a class="btn btn-link p-0" (click)="clearErrors(); createGroupForm(group);" style="color: orange" data-toggle="modal" data-target="#group_form"><span class="fa fa-edit d-block"></span></a>
+      <a class="btn btn-link p-0 ml-1" (click)="deleteGroup(group.id)" style="color: red"><span class="fa fa-trash-alt d-block"></span></a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a class="btn btn-outline-success mt-2" (click)="clearErrors(); createGroupForm();" data-toggle="modal" data-target="#group_form">Добавить</a>
