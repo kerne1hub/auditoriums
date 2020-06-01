@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '../../services/alert.service';
-import { AuthenticationService } from '../../services/authentication.service';
-import { Lecturer } from '../../common/lecturer';
+import { AlertService } from '../../../services/alert.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { Lecturer } from '../../../common/lecturer';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

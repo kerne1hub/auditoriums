@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Auditorium} from '../../common/auditorium';
+import {Auditorium} from '../../../common/auditorium';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Building} from '../../common/building';
-import {AlertService} from '../../services/alert.service';
-import {AuditoriumService} from '../../services/auditorium.service';
+import {Building} from '../../../common/building';
+import {AlertService} from '../../../services/alert.service';
+import {AuditoriumService} from '../../../services/auditorium.service';
 import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
-import {BuildingService} from '../../services/building.service';
+import {BuildingService} from '../../../services/building.service';
 
 @Component({
   selector: 'app-auditorium-form',

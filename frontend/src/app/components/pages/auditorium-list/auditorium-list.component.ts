@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Auditorium} from '../../common/auditorium';
-import {AuditoriumService} from '../../services/auditorium.service';
-import {BuildingService} from '../../services/building.service';
-import {Building} from '../../common/building';
+import {Auditorium} from '../../../common/auditorium';
+import {AuditoriumService} from '../../../services/auditorium.service';
+import {BuildingService} from '../../../services/building.service';
+import {Building} from '../../../common/building';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {Lecture} from '../../common/lecture';
+import {Lecture} from '../../../common/lecture';
 
 @Component({
   selector: 'app-auditorium-list',

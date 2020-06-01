@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService} from '../../services/alert.service';
-import {LecturerService} from '../../services/lecturer.service';
-import {Lecturer} from '../../common/lecturer';
-import {User} from '../../common/user';
-import {AuthenticationService} from '../../services/authentication.service';
+import {AlertService} from '../../../services/alert.service';
+import {LecturerService} from '../../../services/lecturer.service';
+import {Lecturer} from '../../../common/lecturer';
+import {User} from '../../../common/user';
+import {AuthenticationService} from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-user-form',

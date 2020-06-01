@@ -9,17 +9,17 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {Lecture} from '../../common/lecture';
-import {UserFormComponent} from '../user-form/user-form.component';
-import {User} from '../../common/user';
-import {AlertService} from '../../services/alert.service';
-import {LectureService} from '../../services/lecture.service';
-import {LecturerService} from '../../services/lecturer.service';
-import {LectureFormComponent} from '../lecture-form/lecture-form.component';
-import {AuthenticationService} from '../../services/authentication.service';
-import {Lecturer} from '../../common/lecturer';
-import {Building} from '../../common/building';
-import {BuildingService} from '../../services/building.service';
+import {Lecture} from '../../../common/lecture';
+import {UserFormComponent} from '../../forms/user-form/user-form.component';
+import {User} from '../../../common/user';
+import {AlertService} from '../../../services/alert.service';
+import {LectureService} from '../../../services/lecture.service';
+import {LecturerService} from '../../../services/lecturer.service';
+import {LectureFormComponent} from '../../forms/lecture-form/lecture-form.component';
+import {AuthenticationService} from '../../../services/authentication.service';
+import {Lecturer} from '../../../common/lecturer';
+import {Building} from '../../../common/building';
+import {BuildingService} from '../../../services/building.service';
 
 @Component({
   selector: 'app-admin-page',

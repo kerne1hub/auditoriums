@@ -1,10 +1,10 @@
 import {Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
-import {Auditorium} from '../../../common/auditorium';
-import {AuditoriumService} from '../../../services/auditorium.service';
-import {BuildingService} from '../../../services/building.service';
-import {Building} from '../../../common/building';
-import {AuditoriumFormComponent} from '../../auditorium-form/auditorium-form.component';
-import {AlertService} from '../../../services/alert.service';
+import {Auditorium} from '../../../../common/auditorium';
+import {AuditoriumService} from '../../../../services/auditorium.service';
+import {BuildingService} from '../../../../services/building.service';
+import {Building} from '../../../../common/building';
+import {AuditoriumFormComponent} from '../../../forms/auditorium-form/auditorium-form.component';
+import {AlertService} from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-auditoriums-tab',

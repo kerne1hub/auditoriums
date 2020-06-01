@@ -1,17 +1,17 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-import {Lecture} from '../../common/lecture';
+import {Lecture} from '../../../common/lecture';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../../services/alert.service';
-import {LectureService} from '../../services/lecture.service';
-import {Lecturer} from '../../common/lecturer';
-import {Auditorium} from '../../common/auditorium';
-import {Subject} from '../../common/subject';
-import {Group} from '../../common/group';
+import {AlertService} from '../../../services/alert.service';
+import {LectureService} from '../../../services/lecture.service';
+import {Lecturer} from '../../../common/lecturer';
+import {Auditorium} from '../../../common/auditorium';
+import {Subject} from '../../../common/subject';
+import {Group} from '../../../common/group';
 import {NgbDateStruct, NgbTimeAdapter, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, of} from 'rxjs';
 import {catchError, debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
-import {AuditoriumService} from '../../services/auditorium.service';
-import {LecturerService} from '../../services/lecturer.service';
+import {AuditoriumService} from '../../../services/auditorium.service';
+import {LecturerService} from '../../../services/lecturer.service';
 
 const pad = (i: number): string => i < 10 ? `0${i}` : `${i}`;
 

@@ -8,17 +8,17 @@ import {
   OnInit,
   ViewContainerRef
 } from '@angular/core';
-import {LecturerService} from '../../services/lecturer.service';
-import {Lecturer} from '../../common/lecturer';
-import {AlertService} from '../../services/alert.service';
-import {UserFormComponent} from '../user-form/user-form.component';
-import {LectureFormComponent} from '../lecture-form/lecture-form.component';
+import {LecturerService} from '../../../services/lecturer.service';
+import {Lecturer} from '../../../common/lecturer';
+import {AlertService} from '../../../services/alert.service';
+import {UserFormComponent} from '../../forms/user-form/user-form.component';
+import {LectureFormComponent} from '../../forms/lecture-form/lecture-form.component';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {LectureService} from '../../services/lecture.service';
-import {Lecture} from '../../common/lecture';
-import {Auditorium} from '../../common/auditorium';
-import {Group} from '../../common/group';
-import {Subject} from '../../common/subject';
+import {LectureService} from '../../../services/lecture.service';
+import {Lecture} from '../../../common/lecture';
+import {Auditorium} from '../../../common/auditorium';
+import {Group} from '../../../common/group';
+import {Subject} from '../../../common/subject';
 
 @Component({
   selector: 'app-lecturer-page',

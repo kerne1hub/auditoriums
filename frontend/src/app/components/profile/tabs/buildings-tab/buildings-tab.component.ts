@@ -1,8 +1,8 @@
 import {Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
-import {Building} from '../../../common/building';
-import {AlertService} from '../../../services/alert.service';
-import {BuildingService} from '../../../services/building.service';
-import {BuildingFormComponent} from '../../building-form/building-form.component';
+import {Building} from '../../../../common/building';
+import {AlertService} from '../../../../services/alert.service';
+import {BuildingService} from '../../../../services/building.service';
+import {BuildingFormComponent} from '../../../forms/building-form/building-form.component';
 
 @Component({
   selector: 'app-buildings-tab',

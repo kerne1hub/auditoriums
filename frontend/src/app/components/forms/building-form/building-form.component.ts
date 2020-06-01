@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Building} from '../../common/building';
-import {AlertService} from '../../services/alert.service';
-import {BuildingService} from '../../services/building.service';
+import {Building} from '../../../common/building';
+import {AlertService} from '../../../services/alert.service';
+import {BuildingService} from '../../../services/building.service';
 
 @Component({
   selector: 'app-building-form',
