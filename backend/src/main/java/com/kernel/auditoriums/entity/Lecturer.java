@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.kernel.auditoriums.entity.utils.Views;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.security.core.parameters.P;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,10 +13,16 @@ import java.util.Set;
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecturer.class)
 public class Lecturer extends User {
+
+    @Builder
+    public Lecturer(Long id, String firstName, String lastName, String patronymic, String email, String login, String password, UserType userType) {
+        super(id, firstName, lastName, patronymic, email, login, password, userType);
+    }
 
     public Lecturer(String firstName, String lastName, String patronymic, String email, String login, String password, String position) {
         super(firstName, lastName, patronymic, email, login, password);

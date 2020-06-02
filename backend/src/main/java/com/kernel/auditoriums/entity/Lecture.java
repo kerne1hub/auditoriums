@@ -2,19 +2,18 @@ package com.kernel.auditoriums.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.kernel.auditoriums.entity.utils.Views;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
+@Builder
 @EqualsAndHashCode(exclude = {"lecturer", "subject", "group", "auditorium"})
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Lecture.class)
 public class Lecture implements Comparable<Lecture> {
 

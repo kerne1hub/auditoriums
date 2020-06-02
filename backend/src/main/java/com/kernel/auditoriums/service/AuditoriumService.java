@@ -1,9 +1,7 @@
 package com.kernel.auditoriums.service;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.kernel.auditoriums.entity.Auditorium;
 import com.kernel.auditoriums.entity.Lecture;
-import com.kernel.auditoriums.entity.utils.Views;
 import com.kernel.auditoriums.repository.AuditoriumRepository;
 import com.kernel.auditoriums.repository.BuildingRepository;
 import com.kernel.auditoriums.repository.LectureRepository;
@@ -33,7 +31,7 @@ public class AuditoriumService {
         return calendar.getTime();
     }
 
-    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date, String keyword, boolean hasDetails) {
+    public ResponseEntity<List<Auditorium>> getAuditoriums(Integer buildingId, Date date, String keyword) {
         Map<Integer, Auditorium>  auditoriumMap = new HashMap<>();
         List<Auditorium> auditoriums;
 
@@ -42,14 +40,13 @@ public class AuditoriumService {
             return ResponseEntity.ok(auditoriums);
         }
 
-        if (buildingId == null) {
-            auditoriums = auditoriumRepository.findAll();
-        } else {
+        if (buildingId != null) {
             if (date != null) {
+
                 Date startWeekDate = setDayOfWeek(date, Calendar.MONDAY);
                 Date endWeekDate = setDayOfWeek(date, Calendar.SUNDAY);
 
-                auditoriums = auditoriumRepository.findAllByBuildingIdCustom(buildingId);
+                auditoriums = auditoriumRepository.findAllByBuildingIdWithBuilding(buildingId);
 
                 for (Auditorium auditorium: auditoriums) {
                     auditoriumMap.put(auditorium.getId(), auditorium);
@@ -64,6 +61,8 @@ public class AuditoriumService {
             } else {
                 auditoriums = auditoriumRepository.findAllByBuildingIdWithBuilding(buildingId);
             }
+        } else {
+            auditoriums = auditoriumRepository.findAll();
         }
         return ResponseEntity.ok(auditoriums);
     }

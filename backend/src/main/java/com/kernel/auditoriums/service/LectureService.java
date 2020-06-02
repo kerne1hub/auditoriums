@@ -1,15 +1,18 @@
 package com.kernel.auditoriums.service;
 
-import com.kernel.auditoriums.entity.Lecture;
+import com.kernel.auditoriums.entity.*;
 import com.kernel.auditoriums.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.convert.QueryByExamplePredicateBuilder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.criteria.Predicate;
+import java.util.*;
 
 @Service
 public class LectureService {
@@ -40,7 +43,6 @@ public class LectureService {
         return calendar.getTime();
     }
 
-    //TODO: It needs to be redone
     public ResponseEntity<List<Lecture>> getLectures(boolean isUndefined, Integer buildingId, Long groupId, Long lecturerId, Date date) {
         Date startWeekDate;
         Date endWeekDate;
@@ -58,21 +60,28 @@ public class LectureService {
         if (isUndefined) {
             return ResponseEntity.ok(lectureRepository.findAllByLecturerIdIsNullAndDateBetweenOrderByDate(startWeekDate, endWeekDate));
         }
-        if (groupId != null && lecturerId != null) {
-            return ResponseEntity.ok(lectureRepository.findAllByLecturerIdAndGroupIdAndDateBetweenOrderByDate(lecturerId, groupId, startWeekDate, endWeekDate));
-        }
-        if (groupId == null && lecturerId == null) {
-            if (buildingId != null) {
-                return ResponseEntity.ok(lectureRepository.findAllByAuditorium_BuildingIdAndDateBetweenOrderByDate(buildingId, startWeekDate, endWeekDate));
-            }
-            return ResponseEntity.ok(lectureRepository.findAllByDateBetweenOrderByDate(startWeekDate, endWeekDate));
-        }
-        if (groupId != null) {
-            return ResponseEntity.ok(lectureRepository.findAllByGroupIdAndDateBetweenOrderByDate(groupId, startWeekDate, endWeekDate));
-        }
-        {
-            return ResponseEntity.ok(lectureRepository.findAllByLecturerIdAndDateBetweenOrderByDate(lecturerId, startWeekDate, endWeekDate));
-        }
+
+        Lecture example = Lecture.builder()
+                .auditorium(Auditorium.builder().building(Building.builder().id(buildingId).build()).build())
+                .group(Group.builder().id(groupId).build())
+                .lecturer(Lecturer.builder().id(lecturerId).build())
+                .build();
+
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnorePaths("auditorium.capacity", "auditorium.active");
+
+        return ResponseEntity.ok(lectureRepository.findAll(getSpecFromDatesAndExample(startWeekDate, endWeekDate, Example.of(example, matcher))));
+    }
+
+    private Specification<Lecture> getSpecFromDatesAndExample(Date from, Date to, Example<Lecture> example) {
+        return (Specification<Lecture>) (root, query, builder) -> {
+            final List<Predicate> predicates = new ArrayList<>();
+            predicates.add(builder.between(root.get("date"), from, to));
+            query.orderBy(builder.asc(root.get("date")));
+            predicates.add(QueryByExamplePredicateBuilder.getPredicate(root, builder, example));
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     public ResponseEntity<Lecture> getLectureDetails(Lecture lecture) {

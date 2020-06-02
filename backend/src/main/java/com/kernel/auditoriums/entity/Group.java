@@ -12,7 +12,9 @@ import java.util.Set;
 @Entity
 @Table(name = "`group`")
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Group {
