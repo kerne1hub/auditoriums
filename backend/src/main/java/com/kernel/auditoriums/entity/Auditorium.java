@@ -39,6 +39,11 @@ public class Auditorium {
     @Column(name = "building_id", insertable = false, updatable = false)
     private Integer buildingId;
 
+    public Auditorium(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Auditorium(String name, int capacity, boolean active, int buildingId) {
         this.name = name;
         this.capacity = capacity;
